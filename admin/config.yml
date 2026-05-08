@@ -1,0 +1,18 @@
+backend:
+  name: github
+  repo: xavier-db/my-site
+  branch: main
+
+media_folder: "posts/images"
+public_folder: "/posts/images"
+
+collections:
+  - name: "posts"
+    label: "Posts"
+    folder: "posts"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Caption", name: "body", widget: "text" }
