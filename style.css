@@ -27,13 +27,14 @@ header h1 {
 
 header nav a {
     color: white;
-    text-decoration: none;
+    text-decoration: underline transparent;
     margin-left: 15px;
+    transition: color 0.25s ease, text-decoration-color 0.25s ease;
 }
 
 header nav a:hover {
     color: yellow;
-    text-decoration: underline;
+    text-decoration-color: yellow;
 }
 
 .index_main {
