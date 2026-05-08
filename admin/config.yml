@@ -3,6 +3,8 @@ backend:
   repo: xavier-db/my-site
   branch: main
 
+site_url: https://xavier-db.github.io/my-site
+
 media_folder: "posts/images"
 public_folder: "/posts/images"
 
@@ -12,7 +14,9 @@ collections:
     folder: "posts"
     create: true
     slug: "{{slug}}"
+    extension: "json"
+    format: "json"
     fields:
       - { label: "Title", name: "title", widget: "string" }
-      - { label: "Image", name: "image", widget: "image" }
-      - { label: "Caption", name: "body", widget: "text" }
+      - { label: "Image filename", name: "image", widget: "string" }
+      - { label: "Caption", name: "caption", widget: "text" }
