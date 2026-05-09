@@ -4,12 +4,12 @@
 
 1. Copy the `magazine-reference` folder.
 2. Paste it into the `/magazines` directory.
-3. Rename the folder to the title of the new magazine.
+3. Rename the copied folder to the title of the new magazine.
 
 Example:
 
 ```txt
-/magazines/my-new-magazine
+/magazines/My New Magazine **(Replace with your own magazine name)**
 ```
 
 ---
@@ -26,7 +26,7 @@ Example structure:
 
 ```txt
 /magazines
-    /my-new-magazine
+    /My New Magazine **(Replace with your own magazine name)**
         /art
         /music
         /photography
@@ -55,7 +55,7 @@ To create a new post:
 Example:
 
 ```txt
-/art/my-article-title
+/art/My Article Title **(Replace with your own article title)**
 ```
 
 ---
@@ -72,7 +72,7 @@ Inside the post folder, you can add:
 Example:
 
 ```txt
-/art/my-article-title
+/art/My Article Title **(Replace with your own article title)**
     image1.png
     image2.jpg
     video.mp4
@@ -86,9 +86,9 @@ Example:
 ```txt
 /my-site
     /magazines
-        /my-new-magazine
+        /My New Magazine **(Replace with your own magazine name)**
             /art
-                /my-article-title
+                /My Article Title **(Replace with your own article title)**
                     image1.png
                     description.txt
 
