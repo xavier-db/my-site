@@ -20,6 +20,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
+// Navigation active state
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const path = window.location.pathname;
+    const currentPage = path.split("/").pop() || "index.html";
+
+    document.querySelectorAll("nav a").forEach(link => {
+
+        const page = link.getAttribute("data-page");
+
+        // set correct href automatically
+        link.href = "/" + REPO + "/" + page;
+
+        // set active class
+        if (page === currentPage) {
+            link.classList.add("active");
+        }
+    });
+
+});
+
 // Header hide on scroll
 
 let lastScroll = 0;
