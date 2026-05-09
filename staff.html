@@ -1,18 +1,37 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <title>Staff | Site Name</title>
+        <title>Staff's Work | Site Name</title>
         <link rel="stylesheet" href="style.css">
-        <script src="script.js"></script>
     </head>
     <body>
-        <div id="header"></div>
+        <header>
+            <h1 class="siteName">Site Name</h1>
 
-        <main class="staff_main">
-            Staff page
+            <nav>
+                <a href="/index.html">Main</a>
+                <a href="/about.html">About</a>
+                <a class="active" href="/staff.html">Staff's Work</a> 
+                <a href="/contact.html">Contact</a>
+            </nav>
+        </header>
+
+        <main>
+            <section class="hero" style="background-image: url('assets/staffImage.png');">
+                <div class="centered-content wrapped-centered-content">
+                    <h2>Staff's Work</h2>
+
+                    <p>Text, some text, some more text</p>
+                </div>
+            </section>
         </main>
 
-        <div id="footer"></div>
+        <footer>
+            <span class="siteName">&copy;  Site Name</span>
+        </footer>
+
+        <script src="script.js"></script>
     </body>
 </html>

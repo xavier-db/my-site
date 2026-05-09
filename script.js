@@ -1,58 +1,39 @@
 const USER = "xavier-db";
 const REPO = "my-site";
+const siteName = "Xavier: Sample Site";
 
-// Load header and footer
+// Site name replacement
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    fetch('/modules/header.html')
-    .then(r => r.text())
-    .then(data => {
-        const headerEl = document.getElementById('header');
-        if (!headerEl) return;
-        headerEl.innerHTML = data;
-
-        const currentPage = window.location.pathname.split('/').pop();
-
-        if (
-            currentPage === "index.html" ||
-            currentPage === "" ||
-            currentPage === "my-site" ||
-            currentPage === "my-site/"
-        ) {
-        } else if (currentPage === "about.html") {
-            document.querySelector(".about-link")?.classList.add("active");
-        } else if (currentPage === "staff.html") {
-            document.querySelector(".staff-link")?.classList.add("active");
-        } else if (currentPage === "contact.html") {
-            document.querySelector(".contact-link")?.classList.add("active");
+    // update all site name places
+    document.querySelectorAll(".siteName").forEach(el => {
+        if (el.textContent.includes("Site Name")) {
+            el.textContent = el.textContent.replace("Site Name", siteName);
         }
     });
 
-    fetch('/modules/footer.html')
-    .then(r => r.text())
-    .then(data => {
-        const footerEl = document.getElementById('footer');
-        if (!footerEl) return;
-        footerEl.innerHTML = data;
-    });
+    // update browser tab title if needed
+    if (document.title.includes("Site Name")) {
+        document.title = document.title.replace("Site Name", siteName);
+    }
 
 });
-
 
 // Header hide on scroll
 
 let lastScroll = 0;
-const header = document.getElementById("header");
+const header = document.querySelector("header");
 
 window.addEventListener("scroll", () => {
+
+    if (!header) return;
+
     const currentScroll = window.pageYOffset;
 
     if (currentScroll > lastScroll) {
-        // scrolling down
         header.classList.add("hide");
     } else {
-        // scrolling up
         header.classList.remove("hide");
     }
 

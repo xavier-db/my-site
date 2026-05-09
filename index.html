@@ -3,17 +3,26 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>Site Name</title>
+    <title class="siteName">Site Name</title>
 
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <div id="header"></div>
+    <header>
+      <h1 class="siteName">Site Name</h1>
 
-    <main class="index_main">
-      <section class="hero">
+      <nav>
+          <a class="active" href="/index.html">Main</a>
+          <a href="/about.html">About</a>
+          <a href="/staff.html">Staff's Work</a> 
+          <a href="/contact.html">Contact</a>
+      </nav>
+  </header>
+
+    <main>
+      <section class="hero" style="background-image: url('assets/homeImage.png');">
         <div class="centered-content">
-          <h2>Site Name</h2>
+          <h2 class="siteName">Site Name</h2>
 
           <p>Text, some text, some more text</p>
           <a class="button" href="about.html">Discover More</a>
@@ -24,7 +33,9 @@
 
     </main>
 
-    <div id="footer"></div>
+    <footer>
+        <span class="siteName">&copy;  Site Name</span>
+    </footer>
 
     <script src="script.js"></script>
     
