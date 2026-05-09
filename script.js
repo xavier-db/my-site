@@ -104,12 +104,6 @@ async function loadMagazines() {
         anchor.className = "magazine-card";
 
         anchor.innerHTML = `
-            ${
-                imageFile
-                ? `<img src="${imageFile.download_url}" alt="${folder.name}">`
-                : ""
-            }
-
             <h2>${folder.name}</h2>
             <p>${description}</p>
         `;
@@ -126,6 +120,7 @@ async function loadMagazinePage() {
 
     const magazineNameElement = document.getElementById("magazine-name");
     const descriptionElement = document.querySelector(".description");
+    const titleElement = document.querySelector("title");
 
     // stop if not on a magazine page
     if (!magazineNameElement || !descriptionElement) return;
@@ -136,9 +131,10 @@ async function loadMagazinePage() {
     // example:
     // /my-site/magazines/issue-1/
     // -> issue-1
-    const folderName = decodeURIComponent(
-        pathParts[pathParts.indexOf("magazines") + 1]
-    );
+    const parts = window.location.pathname.split("/").filter(Boolean);
+
+    // assumes last folder is magazine name
+    const folderName = decodeURIComponent(parts[parts.length - 1]);
 
     // prettier display name
     const displayName = folderName.replace(/-/g, " ");
