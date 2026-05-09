@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"></html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Site Name</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js"></script>
+</head>
+  <body>
+    <div id="header"></div>
+
+    <main class="index_main">
+      <section class="hero">
+        <div class="centered-content">
+          <h2>Site Name</h2>
+
+          <p>Text, some text, some more text</p>
+          <a class="button" href="about.html">Discover More</a>
+        </div>
+      </section>
+
+      <section class="magazines">
+        <script>
+          const repoOwner = "xavier-db";
+          const repoName = "my-site";
+          const path = "page/magazines"; // adjust if needed
+
+          fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${path}`)
+              .then(res => res.json())
+              .then(data => {
+                const container = document.getElementById("magazines");
+
+                data.forEach(item => {
+                  if (item.type === "dir") {
+                    const link = document.createElement("a");
+
+                    link.href = `magazines/${item.name}/`;
+                    link.textContent = item.name;
+
+                    container.appendChild(link);
+                    container.appendChild(document.createElement("br"));
+                  }
+                });
+              });
+        </script>
+      </section>
+    </main>
+
+
+    <div id="footer"></div>
+  </body>
+</html>
