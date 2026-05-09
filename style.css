@@ -42,6 +42,7 @@ header nav a {
     margin-left: 15px;
     transition: color 0.25s ease;
     text-decoration: none;
+    display: inline-block
 }
 
 header nav a:hover {
@@ -66,10 +67,9 @@ header nav a.active {
 }
 
 .wrapped-centered-content {
-    
     background-color: rgba(0, 0, 0, 0.8);
     border-radius: 20px;
-    padding: 20px;
+    padding: 50px 20px;
     color: white
 }
 

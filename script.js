@@ -72,11 +72,6 @@ async function loadMagazines() {
 
         const files = await folderResponse.json();
 
-        // find first image
-        const imageFile = files.find(file =>
-            file.name.match(/\.(png|jpg|jpeg|webp|gif)$/i)
-        );
-
         // find info.txt
         const infoFile = files.find(file =>
             file.name === "info.txt"
@@ -113,40 +108,42 @@ async function loadMagazinePage() {
 
     const magazineNameElement = document.getElementById("magazine-name");
     const descriptionElement = document.querySelector(".description");
-    const titleElement = document.querySelector("title");
+    const heroElement = document.querySelector(".hero");
 
-    // stop if not on a magazine page
     if (!magazineNameElement || !descriptionElement) return;
 
-    // get folder name from URL
-    const pathParts = window.location.pathname.split("/");
-
-    // example:
-    // /my-site/magazines/issue-1/
-    // -> issue-1
     const parts = window.location.pathname.split("/").filter(Boolean);
-
-    // assumes last folder is magazine name
     const folderName = decodeURIComponent(parts[parts.length - 1]);
-
-    // prettier display name
     const displayName = folderName.replace(/-/g, " ");
 
     magazineNameElement.textContent = displayName;
 
     try {
 
-        // load info.txt
+        const folderResponse = await fetch(
+            `https://api.github.com/repos/${USER}/${REPO}/contents/magazines/${folderName}`
+        );
+
+        const files = await folderResponse.json();
+
+        // FIND FIRST IMAGE
+        const imageFile = files.find(file =>
+            file.name.match(/\.(png|jpg|jpeg|webp|gif)$/i)
+        );
+
+        if (imageFile) {
+            heroElement.style.backgroundImage = `url(${imageFile.download_url})`;
+        }
+
+        // LOAD INFO
         const infoResponse = await fetch(
             `https://raw.githubusercontent.com/${USER}/${REPO}/main/magazines/${folderName}/info.txt`
         );
 
         const description = await infoResponse.text();
-
         descriptionElement.textContent = description;
 
     } catch {
-
         descriptionElement.textContent = "No description available.";
     }
 }
