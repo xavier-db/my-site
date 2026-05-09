@@ -3,33 +3,36 @@ const REPO = "my-site";
 
 // Load header and footer
 
-fetch('./modules/header.html')
-.then(response => response.text())
-.then(data => {
-    document.getElementById('header').innerHTML = data;
+document.addEventListener("DOMContentLoaded", () => {
 
-    const currentPage = window.location.pathname.split('/').pop();
+    fetch('/modules/header.html')
+    .then(r => r.text())
+    .then(data => {
+        const headerEl = document.getElementById('header');
+        if (!headerEl) return;
+        headerEl.innerHTML = data;
 
-    if (currentPage === "index.html" || currentPage === "") {
-        document.querySelector(".index-link")?.classList.add("active");
-    }
-    else if (currentPage === "about.html") {
-        document.querySelector(".about-link")?.classList.add("active");
-    }
+        const currentPage = window.location.pathname.split('/').pop();
 
-    else if (currentPage === "staff.html") {
-        document.querySelector(".staff-link")?.classList.add("active");
-    }
+        if (currentPage === "index.html" || currentPage === "") {
+            document.querySelector(".index-link")?.classList.add("active");
+        } else if (currentPage === "about.html") {
+            document.querySelector(".about-link")?.classList.add("active");
+        } else if (currentPage === "staff.html") {
+            document.querySelector(".staff-link")?.classList.add("active");
+        } else if (currentPage === "contact.html") {
+            document.querySelector(".contact-link")?.classList.add("active");
+        }
+    });
 
-    else if (currentPage === "contact.html") {
-        document.querySelector(".contact-link")?.classList.add("active");
-    }
-});
+    fetch('/modules/footer.html')
+    .then(r => r.text())
+    .then(data => {
+        const footerEl = document.getElementById('footer');
+        if (!footerEl) return;
+        footerEl.innerHTML = data;
+    });
 
-fetch('./modules/footer.html')
-.then(response => response.text())
-.then(data => {
-    document.getElementById('footer').innerHTML = data;
 });
 
 
