@@ -14,8 +14,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const currentPage = window.location.pathname.split('/').pop();
 
-        if (currentPage === "index.html" || currentPage === "") {
-            document.querySelector(".index-link")?.classList.add("active");
+        if (
+            currentPage === "index.html" ||
+            currentPage === "" ||
+            currentPage === "my-site" ||
+            currentPage === "my-site/"
+        ) {
         } else if (currentPage === "about.html") {
             document.querySelector(".about-link")?.classList.add("active");
         } else if (currentPage === "staff.html") {
