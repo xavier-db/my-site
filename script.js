@@ -24,22 +24,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    const path = window.location.pathname;
-    const currentPage = path.split("/").pop() || "index.html";
+    const path = window.location.pathname.split("/").pop() || "index.html";
 
     document.querySelectorAll("nav a").forEach(link => {
 
-        const page = link.getAttribute("data-page");
+        const linkPage = link.getAttribute("href").split("/").pop();
 
-        // set correct href automatically
-        link.href = "/" + REPO + "/" + page;
-
-        // set active class
-        if (page === currentPage) {
+        if (linkPage === path) {
             link.classList.add("active");
         }
     });
-
 });
 
 // Header hide on scroll
