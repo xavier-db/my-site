@@ -2,7 +2,7 @@ const USER = "xavier-db";
 const REPO = "my-site";
 const siteName = "Xavier: Sample Site";
 
-// Site name replacement
+// Site name replacement and repo replacement
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -18,20 +18,9 @@ document.addEventListener("DOMContentLoaded", () => {
         document.title = document.title.replace("Site Name", siteName);
     }
 
-});
-
-// Navigation active state
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    const path = window.location.pathname.split("/").pop() || "index.html";
-
-    document.querySelectorAll("nav a").forEach(link => {
-
-        const linkPage = link.getAttribute("href").split("/").pop();
-
-        if (linkPage === path) {
-            link.classList.add("active");
+    document.querySelectorAll(".siteRepo").forEach(el => {
+        if (el.href.includes("siteRepo")) {
+            el.href = el.href.replace("siteRepo", REPO);
         }
     });
 });
