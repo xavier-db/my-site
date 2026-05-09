@@ -136,7 +136,9 @@ async function loadMagazinePage() {
     // example:
     // /my-site/magazines/issue-1/
     // -> issue-1
-    const folderName = pathParts[pathParts.indexOf("magazines") + 1];
+    const folderName = decodeURIComponent(
+        pathParts[pathParts.indexOf("magazines") + 1]
+    );
 
     // prettier display name
     const displayName = folderName.replace(/-/g, " ");
