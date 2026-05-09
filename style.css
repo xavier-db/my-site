@@ -56,6 +56,9 @@ header nav a.active {
 .hero {
     display: flex;
     min-height: 90vh;
+    background-image: url('assets/hero.png');
+    background-size: cover;
+    background-position: center;
 }
 
 .centered-content {

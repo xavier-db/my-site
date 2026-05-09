@@ -20,31 +20,7 @@
         </div>
       </section>
 
-      <section class="magazines">
-        <script>
-          const repoOwner = "xavier-db";
-          const repoName = "my-site";
-          const path = "page/magazines"; // adjust if needed
-
-          fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${path}`)
-              .then(res => res.json())
-              .then(data => {
-                const container = document.getElementById("magazines");
-
-                data.forEach(item => {
-                  if (item.type === "dir") {
-                    const link = document.createElement("a");
-
-                    link.href = `magazines/${item.name}/`;
-                    link.textContent = item.name;
-
-                    container.appendChild(link);
-                    container.appendChild(document.createElement("br"));
-                  }
-                });
-              });
-        </script>
-      </section>
+      <section id="magazines"></script></section>
     </main>
 
 
