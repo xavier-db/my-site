@@ -1,6 +1,7 @@
 const USER = "xavier-db";
 const REPO = "my-site";
 const siteName = "Xavier: Sample Site";
+const contactEmail = "xfakter7@gmail.com"
 
 // Site name replacement and repo replacement
 
