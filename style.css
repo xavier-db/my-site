@@ -1,12 +1,12 @@
 :root {
-    --green-dark: rgb(74, 94, 60);
-    --green: rgb(92, 120, 78);
-    --green-light: rgb(153, 173, 122);
+    --primary: rgb(92, 103, 60);
+    --primary-hover: rgb(74, 82, 48);
 
-    --text: rgb(255, 248, 236);
+    --secondary: rgb(233, 229, 217);
+    --seconday-hover: rgb(220, 217, 205);
 
-    --accent: rgb(230, 210, 160);
-    --accent-hover: rgb(245, 225, 175);
+    --accent: rgb(55, 40, 7);
+    --accent-hover: rgb(42, 30, 5);
 }
 
 html, body {
@@ -32,7 +32,7 @@ header {
     width: 100%;
     min-width: 10%;
 
-    background-color: var(--green-dark);
+    background-color: var(--primary);
 
     display: flex;
     justify-content: space-between;
@@ -48,11 +48,11 @@ header nav {
 
 header h1 {
     margin-left: 5%;
-    color: var(--text);
+    color: var(--secondary);
 }
 
 header nav a {
-    color: var(--text);
+    color: var(--secondary);
     margin-left: 15px;
 
     text-decoration: none;
@@ -62,12 +62,12 @@ header nav a {
 }
 
 header nav a:hover {
-    color: var(--accent-hover);
+    color: var(--seconday-hover);
     text-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
 }
 
 header nav a.active {
-    color: var(--accent-hover);
+    color: var(--secondary);
     text-decoration: underline;
 }
 
@@ -88,7 +88,7 @@ header nav a.active {
     position: absolute;
     inset: 0;
 
-    background: rgba(74, 94, 60, 0.4);
+    background: rgba(92, 103, 60, 0.4);
 
     z-index: 0;
 }
@@ -100,8 +100,12 @@ header nav a.active {
 
 /* TEXT */
 
+h1.cover, h2.cover, p.cover {
+    color: var(--secondary);
+}
+
 h1, h2, p {
-    color: var(--text);
+    color: var(--accent);
 }
 
 p {
@@ -116,7 +120,7 @@ p {
 }
 
 .wrapped-centered-content {
-    background-color: rgba(74, 94, 60, 0.8);
+    background-color: var(--primary);
     border-radius: 20px;
     padding: 50px 20px;
 }
@@ -127,7 +131,7 @@ p {
     display: inline-block;
     padding: 15px 22px;
 
-    background-color: var(--accent);
+    background-color: var(--secondary);
     color: rgb(35, 35, 35);
 
     font-weight: 700;
@@ -141,26 +145,72 @@ p {
 }
 
 .button:hover {
-    background-color: var(--accent-hover);
+    background-color: var(--seconday-hover);
     transform: translateY(-2px);
 }
 
 /* SEPARATOR */
 
 .separator {
-    border-top: 10px solid var(--green-dark);
+    border-top: 10px solid var(--secondary);
     margin: 0;
+    padding: 0;
+}
+
+#magazines {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    background-color: var(--primary);
+}
+
+.magazine-card {
+    display: block;
+
+    padding: 20px;
+    border-radius: 12px;
+
+    background: var(--secondary);
+    color: var(--accent);
+
+    text-decoration: none;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.magazine-card:hover {
+    transform: translateY(-4px);
+
+    background: var(--seconday-hover);
+
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.magazine-card h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.magazine-card p {
+    margin: 0;
+    opacity: 0.9;
 }
 
 /* FOOTER */
 
 footer {
-    background-color: var(--green-dark);
+    background-color: var(--primary);
 
     min-height: 10%;
     width: 100%;
 
-    color: var(--text);
+    color: var(--secondary);
 
     padding: 2.5% 0;
 

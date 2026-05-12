@@ -81,7 +81,9 @@ async function loadMagazines() {
     }
 }
 
-loadMagazines();
+if (magazinesContainer) {
+    loadMagazines();
+}
 
 // Load individual magazine page
 
