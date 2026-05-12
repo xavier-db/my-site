@@ -26,26 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-// Header hide on scroll
-
-let lastScroll = 0;
-const header = document.querySelector("header");
-
-window.addEventListener("scroll", () => {
-
-    if (!header) return;
-
-    const currentScroll = window.pageYOffset;
-
-    if (currentScroll > lastScroll) {
-        header.classList.add("hide");
-    } else {
-        header.classList.remove("hide");
-    }
-
-    lastScroll = currentScroll;
-});
-
 // Load magazines
 
 const magazinesContainer = document.getElementById("magazines");
@@ -150,3 +130,29 @@ async function loadMagazinePage() {
 }
 
 loadMagazinePage();
+
+// Header scroll
+
+const header = document.querySelector("header");
+
+let lastScroll = window.scrollY;
+let currentTranslate = 0;
+
+window.addEventListener("scroll", () => {
+
+    const currentScroll = window.scrollY;
+    const difference = currentScroll - lastScroll;
+
+    currentTranslate -= difference;
+
+    const headerHeight = header.offsetHeight;
+
+    // clamp movement
+    currentTranslate = Math.min(0, currentTranslate);
+    currentTranslate = Math.max(-headerHeight, currentTranslate);
+
+    header.style.transform = `translateY(${currentTranslate}px)`;
+
+    lastScroll = currentScroll;
+
+});
