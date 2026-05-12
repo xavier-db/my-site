@@ -55,7 +55,7 @@ async function loadMagazines() {
 
         // find info.txt
         const infoFile = files.find(file =>
-            file.name === "info.txt"
+            file.name === "description.txt"
         );
 
         let description = "";
@@ -169,3 +169,59 @@ function animate() {
 }
 
 animate();
+
+// Load categories
+
+const magazinesContainer = document.getElementById("categories");
+
+async function loadCategories() {
+
+    const response = await fetch(
+        `https://api.github.com/repos/${USER}/${REPO}/contents/magazines/contents/contents`
+    );
+
+    const folders = await response.json();
+
+    for (const folder of folders) {
+
+        // only folders
+        if (folder.type !== "dir") continue;
+
+        // get files inside magazine folder
+        const folderResponse = await fetch(
+            `https://api.github.com/repos/${USER}/${REPO}/contents/magazines/contents${folder.name}`
+        );
+
+        const files = await folderResponse.json();
+
+        // find info.txt
+        const infoFile = files.find(file =>
+            file.name === "description.txt"
+        );
+
+        let description = "";
+
+        if (infoFile) {
+
+            const infoResponse = await fetch(infoFile.download_url);
+
+            description = await infoResponse.text();
+        }
+
+        const anchor = document.createElement("a");
+
+        anchor.href = `magazines/${folder.name}/`;
+        anchor.className = "magazine-card";
+
+        anchor.innerHTML = `
+            <h2>${folder.name}</h2>
+            <p>${description}</p>
+        `;
+
+        magazinesContainer.appendChild(anchor);
+    }
+}
+
+if (magazinesContainer) {
+    loadMagazines();
+}
