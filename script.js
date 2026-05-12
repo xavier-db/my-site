@@ -136,23 +136,34 @@ loadMagazinePage();
 const header = document.querySelector("header");
 
 let lastScroll = window.scrollY;
-let currentTranslate = 0;
+let target = 0;
+let current = 0;
+
+function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+}
 
 window.addEventListener("scroll", () => {
+    const currentScroll = Math.max(0, window.scrollY);
 
-    const currentScroll = window.scrollY;
-    const difference = currentScroll - lastScroll;
+    const diff = currentScroll - lastScroll;
 
-    currentTranslate -= difference;
+    target -= diff;
 
-    const headerHeight = header.offsetHeight;
+    const maxHide = header.offsetHeight;
 
-    // clamp movement
-    currentTranslate = Math.min(0, currentTranslate);
-    currentTranslate = Math.max(-headerHeight, currentTranslate);
-
-    header.style.transform = `translateY(${currentTranslate}px)`;
+    target = clamp(target, -maxHide, 0);
 
     lastScroll = currentScroll;
-
 });
+
+function animate() {
+    // smooth interpolation (removes jitter)
+    current += (target - current) * 0.15;
+
+    header.style.transform = `translateY(${current}px)`;
+
+    requestAnimationFrame(animate);
+}
+
+animate();
