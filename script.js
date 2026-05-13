@@ -267,3 +267,39 @@ async function loadCategory(magazineName, categoryName) {
         console.error("Failed loading category", error);
     }
 }
+
+// Header scroll
+const header = document.querySelector("header");
+
+let lastScroll = window.scrollY;
+let target = 0;
+let current = 0;
+
+function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+}
+
+window.addEventListener("scroll", () => {
+    const currentScroll = Math.max(0, window.scrollY);
+
+    const diff = currentScroll - lastScroll;
+
+    target -= diff;
+
+    const maxHide = header.offsetHeight;
+
+    target = clamp(target, -maxHide, 0);
+
+    lastScroll = currentScroll;
+});
+
+function animate() {
+    // smooth interpolation (removes jitter)
+    current += (target - current) * 0.15;
+
+    header.style.transform = `translateY(${current}px)`;
+
+    requestAnimationFrame(animate);
+}
+
+animate();
