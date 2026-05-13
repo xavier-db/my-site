@@ -159,9 +159,20 @@ p {
 
 #magazines {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-    padding: 20px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    padding-top: 20px;
+    margin: 0 10px 0 10px;
+}
+
+/* mobile */
+@media (max-width: 700px) {
+    #magazines {
+        grid-template-columns: 1fr;
+    }
+}
+
+main {
     background-color: var(--primary);
 }
 
