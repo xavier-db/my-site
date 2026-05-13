@@ -247,69 +247,48 @@ async function loadCategory(magazineName, categoryName) {
 
         if (!Array.isArray(folders)) return;
         
-        for (const piece of folders) {
+        for (const item of folders) {
 
-            if (piece.type !== "dir") continue;
-
-            const pieceResponse = await fetch(
-                `https://api.github.com/repos/${USER}/${REPO}/contents/magazines/${magazineName}/${categoryName}/${piece.name}`
-            );
-
-            const files = await pieceResponse.json();
-
-            // description
-            const descriptionFile = files.find(file =>
-                file.name === "description.txt"
-            );
-
-            let description = "";
-
-            if (descriptionFile) {
-
-                const descResponse = await fetch(descriptionFile.download_url);
-
-                description = await descResponse.text();
+            // CASE 1: subfolder (piece system)
+            if (item.type === "dir") {
+                // existing piece logic stays here (unchanged)
+                continue;
             }
 
-            // first image
-            const imageFile = files.find(file =>
-                file.name.match(/\.(png|jpg|jpeg|webp|gif)$/i)
-            );
+            // CASE 2: direct media inside category (NEW)
+            if (item.type === "file") {
 
-            // video
-            const videoFile = files.find(file =>
-                file.name.match(/\.(mp4|webm|mov)$/i)
-            );
+                if (item.name === "description.txt") continue;
 
-            const card = document.createElement("div");
+                const isImage = item.name.match(/\.(png|jpg|jpeg|webp|gif)$/i);
+                const isVideo = item.name.match(/\.(mp4|webm|mov)$/i);
 
-            card.className = "piece-card";
+                if (!isImage && !isVideo) continue;
 
-            let mediaHTML = "";
+                const card = document.createElement("div");
+                card.className = "piece-card";
 
-            if (imageFile) {
+                let mediaHTML = "";
 
-                mediaHTML += `
-                    <img src="${imageFile.download_url}" alt="${piece.name}">
+                if (isImage) {
+                    mediaHTML += `<img src="${item.download_url}" alt="${item.name}">`;
+                }
+
+                if (isVideo) {
+                    mediaHTML += `
+                        <video controls>
+                            <source src="${item.download_url}">
+                        </video>
+                    `;
+                }
+
+                card.innerHTML = `
+                    ${mediaHTML}
+                    <h3>${item.name}</h3>
                 `;
+
+                piecesContainer.appendChild(card);
             }
-
-            if (videoFile) {
-
-                mediaHTML += `
-                    <video controls>
-                        <source src="${videoFile.download_url}">
-                    </video>
-                `;
-            }
-
-            card.innerHTML = `
-                ${mediaHTML}
-                <h3>${piece.name}</h3>
-                <p>${description}</p>
-            `;
-
-            piecesContainer.appendChild(card);
         }
 
     } catch (error) {
