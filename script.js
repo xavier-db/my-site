@@ -274,7 +274,7 @@ async function loadCategory(magazineName, categoryName) {
             }
 
             const mediaFiles = files.filter(f =>
-                f.name.match(/\.(png|jpg|jpeg|webp|gif|mp4|webm|mov)$/i)
+                f.name.match(/\.(png|jpg|jpeg|webp|gif|mp4|webm|mov|mp3|wav|ogg|flac|m4a)$/i)
             );
 
             let mediaHTML = "";
@@ -290,6 +290,14 @@ async function loadCategory(magazineName, categoryName) {
                         <video controls>
                             <source src="${media.download_url}">
                         </video>
+                    `;
+                }
+
+                if (media.name.match(/\.(mp3|wav|ogg|flac|m4a)$/i)) {
+                    mediaHTML += `
+                        <audio controls>
+                            <source src="${media.download_url}">
+                        </audio>
                     `;
                 }
             }

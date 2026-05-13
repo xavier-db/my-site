@@ -20,12 +20,23 @@
 
         <main class="contact_main">
             <form class="contactForm" action="https://formsubmit.co/xfakter7@gmail.com" method="POST" enctype="multipart/form-data">
+                <h2>Contact Us</h2>
+                <p>
+                    For collaboration, inquiries, or creative opportunities, feel free to send a message.
+                </p>
+
                 <input type="text" name="name" placeholder="Your Name" required>
                 <input type="email" name="email" placeholder="Email Address" required>
                 <textarea name="message" placeholder="Write your message here" required></textarea>
-                <input type="file" name="attachment" accept="image/png, image/jpeg, image/gif">
-                <input type="hidden" name="_next" value="https://xavier-db.github.io/my-site/index.html">
+
+                <p style="font-weight: bold;">
+                    Attach images / audio files (10MB max file size)
+                </p>
+
+                <input type="file" name="attachment" accept=".png, .jpeg, .jpg, .gif, .webp, .mp3, .wav, .ogg, .flac, .m4a">
                 <button type="submit">Send Message</button>
+
+                <input type="hidden" name="_next" value="https://xavier-db.github.io/my-site/index.html">
             </form>
         </main>
 

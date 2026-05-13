@@ -247,136 +247,79 @@ footer span {
     display: flex;
     justify-content: center;
     align-items: center;
+
     padding: 140px 20px 80px;
-    background-color: var(--primary);
+    background: var(--primary);
 }
 
 .contact_main form {
     width: 100%;
     max-width: 500px;
+
     display: flex;
     flex-direction: column;
-    gap: 0;
+    gap: 14px;
+
+    padding: 32px;
+    border-radius: 16px;
 
     background: var(--secondary);
-    border-radius: 16px;
-    padding: 40px 36px 36px;
-
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
-.contact_main form::before {
-    content: "Get in Touch";
-    display: block;
-    font-size: 1.6rem;
-    font-weight: 700;
+.contact_main h2 {
+    margin: 0;
     color: var(--accent);
-    margin-bottom: 6px;
 }
 
-.contact_main form::after {
-    content: "FILLER TEXT FILLER TEXT PUT SOMETHING ELSE HERE LATER OR SOMETHING";
-    display: block;
-    font-size: 0.9rem;
-    color: var(--accent);
-    opacity: 0.6;
-    margin-bottom: 24px;
-    line-height: 1.5;
+.contact_main p {
+    margin: 0 0 10px;
+    opacity: 0.7;
 }
 
-.contact_main form::before,
-.contact_main form::after {
-    order: -2;
-}
-
-.contact_main form::after {
-    order: -1;
-}
-
-.contact_main input[type="text"],
-.contact_main input[type="email"],
+.contact_main input,
 .contact_main textarea {
     width: 100%;
-    padding: 12px 14px;
-    margin-bottom: 14px;
+    padding: 12px;
 
-    border: 1.5px solid rgba(55, 40, 7, 0.15);
+    border: 1px solid rgba(55, 40, 7, 0.15);
     border-radius: 8px;
+
+    font: inherit;
+    color: var(--accent);
     background: white;
-    color: var(--accent);
 
-    font-size: 0.95rem;
-    font-family: inherit;
-    outline: none;
-
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
     box-sizing: border-box;
-}
-
-.contact_main input[type="text"]:focus,
-.contact_main input[type="email"]:focus,
-.contact_main textarea:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(92, 103, 60, 0.2);
-}
-
-.contact_main input::placeholder,
-.contact_main textarea::placeholder {
-    color: var(--accent);
-    opacity: 0.35;
 }
 
 .contact_main textarea {
     min-height: 140px;
     resize: vertical;
-    margin-bottom: 8px;
 }
 
-.contact_main input[type="file"] {
-    font-size: 0.85rem;
-    color: var(--accent);
-    opacity: 0.6;
-    cursor: pointer;
-    margin-bottom: 20px;
-    padding: 4px 0;
+.contact_main input:focus,
+.contact_main textarea:focus {
+    outline: 2px solid rgba(92, 103, 60, 0.3);
+    border-color: var(--primary);
 }
 
-.contact_main input[type="file"]::file-selector-button {
-    padding: 7px 14px;
-    border: 1.5px solid rgba(55, 40, 7, 0.15);
-    border-radius: 6px;
-    background: white;
-    color: var(--accent);
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    margin-right: 10px;
-    transition: background-color 0.2s ease, border-color 0.2s ease;
-}
+.contact_main button {
+    padding: 14px;
 
-.contact_main input[type="file"]::file-selector-button:hover {
-    background-color: var(--secondary-hover);
-    border-color: rgba(55, 40, 7, 0.3);
-}
-
-.contact_main button[type="submit"] {
-    padding: 14px 24px;
     border: none;
     border-radius: 8px;
+
     background: var(--primary);
     color: var(--secondary);
 
-    font-size: 1rem;
     font-weight: 700;
     cursor: pointer;
-    letter-spacing: 0.02em;
 
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease, background-color 0.25s ease;
+    transition: background 0.2s ease, transform 0.2s ease;
 }
 
-.contact_main button[type="submit"]:hover {
-    background-color: var(--primary-hover);
+.contact_main button:hover {
+    background: var(--primary-hover);
     transform: translateY(-2px);
 }
 
@@ -386,6 +329,6 @@ footer span {
     }
 
     .contact_main form {
-        padding: 30px 24px 28px;
+        padding: 24px;
     }
 }
