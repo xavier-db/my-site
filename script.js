@@ -3,7 +3,45 @@ const REPO = "my-site";
 const siteName = "Xavier: Sample Site";
 const contactEmail = "xfakter7@gmail.com";
 
+// HEADER
+
+const header = document.querySelector("header");
+
+let lastScroll = window.scrollY;
+let target = 0;
+let current = 0;
+
+function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+}
+
+window.addEventListener("scroll", () => {
+    const currentScroll = Math.max(0, window.scrollY);
+
+    const diff = currentScroll - lastScroll;
+
+    target -= diff;
+
+    const maxHide = header.offsetHeight;
+
+    target = clamp(target, -maxHide, 0);
+
+    lastScroll = currentScroll;
+});
+
+function animate() {
+    // smooth interpolation (removes jitter)
+    current += (target - current) * 0.15;
+
+    header.style.transform = `translateY(${current}px)`;
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+
 // Site name replacement and repo replacement
+
 document.addEventListener("DOMContentLoaded", () => {
 
     document.querySelectorAll(".siteName").forEach(el => {
@@ -21,9 +59,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const magazinesContainer = document.getElementById("magazines");
 
-// =========================
 // MAGAZINES
-// =========================
+
 async function loadMagazines() {
 
     const response = await fetch(
@@ -67,9 +104,9 @@ async function loadMagazines() {
 
 if (magazinesContainer) loadMagazines();
 
-// =========================
+
 // MAGAZINE PAGE
-// =========================
+
 async function loadMagazinePage() {
 
     const magazineNameElement = document.getElementById("magazine-name");
@@ -117,9 +154,9 @@ async function loadMagazinePage() {
 
 loadMagazinePage();
 
-// =========================
+
 // CATEGORY SYSTEM
-// =========================
+
 const categoriesContainer = document.getElementById("categories");
 const piecesContainer = document.getElementById("pieces");
 const categoryTitle = document.getElementById("category-title");
@@ -135,9 +172,9 @@ document.getElementById("back-button")?.addEventListener("click", showCategories
 const categoryView = document.getElementById("category-view");
 if (categoryView) categoryView.style.display = "none";
 
-// =========================
+
 // LOAD CATEGORIES
-// =========================
+
 async function loadCategories() {
     const parts = window.location.pathname.split("/").filter(Boolean);
     const magazineIndex = parts.indexOf("magazines");
@@ -194,9 +231,9 @@ async function loadCategories() {
 
 if (categoriesContainer) loadCategories();
 
-// =========================
+
 // LOAD CATEGORY
-// =========================
+
 async function loadCategory(magazineName, categoryName) {
 
     piecesContainer.innerHTML = "";
@@ -267,39 +304,3 @@ async function loadCategory(magazineName, categoryName) {
         console.error("Failed loading category", error);
     }
 }
-
-// Header scroll
-const header = document.querySelector("header");
-
-let lastScroll = window.scrollY;
-let target = 0;
-let current = 0;
-
-function clamp(value, min, max) {
-    return Math.max(min, Math.min(max, value));
-}
-
-window.addEventListener("scroll", () => {
-    const currentScroll = Math.max(0, window.scrollY);
-
-    const diff = currentScroll - lastScroll;
-
-    target -= diff;
-
-    const maxHide = header.offsetHeight;
-
-    target = clamp(target, -maxHide, 0);
-
-    lastScroll = currentScroll;
-});
-
-function animate() {
-    // smooth interpolation (removes jitter)
-    current += (target - current) * 0.15;
-
-    header.style.transform = `translateY(${current}px)`;
-
-    requestAnimationFrame(animate);
-}
-
-animate();
