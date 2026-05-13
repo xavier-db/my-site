@@ -126,12 +126,14 @@ const categoryTitle = document.getElementById("category-title");
 
 function showCategories() {
     categoriesContainer.style.display = "grid";
-    document.getElementById("category-view").style.display = "none";
+    const categoryView = document.getElementById("category-view");
+    if (categoryView) categoryView.style.display = "none";
 }
 
 document.getElementById("back-button")?.addEventListener("click", showCategories);
 
-document.getElementById("category-view").style.display = "none";
+const categoryView = document.getElementById("category-view");
+if (categoryView) categoryView.style.display = "none";
 
 // =========================
 // LOAD CATEGORIES
