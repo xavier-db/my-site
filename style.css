@@ -202,6 +202,12 @@ p {
     opacity: 0.9;
 }
 
+.category-description {
+    padding: 10px 20px;
+    opacity: 0.9;
+    max-width: 800px;
+}
+
 /* FOOTER */
 
 footer {

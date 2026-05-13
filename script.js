@@ -1,13 +1,11 @@
 const USER = "xavier-db";
 const REPO = "my-site";
 const siteName = "Xavier: Sample Site";
-const contactEmail = "xfakter7@gmail.com"
+const contactEmail = "xfakter7@gmail.com";
 
 // Site name replacement and repo replacement
-
 document.addEventListener("DOMContentLoaded", () => {
 
-    // update all site name places
     document.querySelectorAll(".siteName").forEach(el => {
         if (el.textContent.includes("Site Name")) {
             el.textContent = el.textContent.replace("Site Name", siteName);
@@ -21,10 +19,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-// Load magazines
-
 const magazinesContainer = document.getElementById("magazines");
 
+// =========================
+// MAGAZINES
+// =========================
 async function loadMagazines() {
 
     const response = await fetch(
@@ -35,35 +34,25 @@ async function loadMagazines() {
 
     for (const folder of folders) {
 
-        // only folders
         if (folder.type !== "dir") continue;
-
-        // skip template folder
         if (folder.name === "magazine-reference (DO NOT DELETE)") continue;
 
-        // get files inside magazine folder
         const folderResponse = await fetch(
             `https://api.github.com/repos/${USER}/${REPO}/contents/magazines/${folder.name}`
         );
 
         const files = await folderResponse.json();
 
-        // find description.txt
-        const infoFile = files.find(file =>
-            file.name === "description.txt"
-        );
+        const infoFile = files.find(f => f.name === "description.txt");
 
         let description = "";
 
         if (infoFile) {
-
             const infoResponse = await fetch(infoFile.download_url);
-
             description = await infoResponse.text();
         }
 
         const anchor = document.createElement("a");
-
         anchor.href = `magazines/${folder.name}/`;
         anchor.className = "magazine-card";
 
@@ -76,12 +65,11 @@ async function loadMagazines() {
     }
 }
 
-if (magazinesContainer) {
-    loadMagazines();
-}
+if (magazinesContainer) loadMagazines();
 
-// Load individual magazine page
-
+// =========================
+// MAGAZINE PAGE
+// =========================
 async function loadMagazinePage() {
 
     const magazineNameElement = document.getElementById("magazine-name");
@@ -98,36 +86,29 @@ async function loadMagazinePage() {
     const folderName = decodeURIComponent(parts[magazineIndex + 1]);
     const displayName = folderName.replace(/-/g, " ");
 
-    const fullTitle = `${displayName} | ${siteName}`;
-
     magazineNameElement.textContent = displayName;
-
-    document.title = fullTitle;
+    document.title = `${displayName} | ${siteName}`;
 
     try {
-
         const folderResponse = await fetch(
             `https://api.github.com/repos/${USER}/${REPO}/contents/magazines/${folderName}`
         );
 
         const files = await folderResponse.json();
 
-        // FIND FIRST IMAGE
-        const imageFile = files.find(file =>
-            file.name.match(/\.(png|jpg|jpeg|webp|gif)$/i)
+        const imageFile = files.find(f =>
+            f.name.match(/\.(png|jpg|jpeg|webp|gif)$/i)
         );
 
         if (imageFile) {
             heroElement.style.backgroundImage = `url(${imageFile.download_url})`;
         }
 
-        // LOAD INFO
         const infoResponse = await fetch(
             `https://raw.githubusercontent.com/${USER}/${REPO}/main/magazines/${folderName}/description.txt`
         );
 
-        const description = await infoResponse.text();
-        descriptionElement.textContent = description;
+        descriptionElement.textContent = await infoResponse.text();
 
     } catch {
         descriptionElement.textContent = "No description available.";
@@ -136,47 +117,9 @@ async function loadMagazinePage() {
 
 loadMagazinePage();
 
-// Header scroll
-
-const header = document.querySelector("header");
-
-if (header) {
-
-    let lastScroll = window.scrollY;
-    let target = 0;
-    let current = 0;
-
-    function clamp(value, min, max) {
-        return Math.max(min, Math.min(max, value));
-    }
-
-    window.addEventListener("scroll", () => {
-        const currentScroll = Math.max(0, window.scrollY);
-
-        const diff = currentScroll - lastScroll;
-
-        target -= diff;
-
-        const maxHide = header.offsetHeight;
-
-        target = clamp(target, -maxHide, 0);
-
-        lastScroll = currentScroll;
-    });
-
-    function animate() {
-        current += (target - current) * 0.15;
-        header.style.transform = `translateY(${current}px)`;
-        requestAnimationFrame(animate);
-    }
-
-    animate();
-}
-
 // =========================
 // CATEGORY SYSTEM
 // =========================
-
 const categoriesContainer = document.getElementById("categories");
 const piecesContainer = document.getElementById("pieces");
 const categoryTitle = document.getElementById("category-title");
@@ -187,34 +130,37 @@ function showCategories() {
 }
 
 document.getElementById("back-button")?.addEventListener("click", showCategories);
+
 document.getElementById("category-view").style.display = "none";
 
+// =========================
+// LOAD CATEGORIES
+// =========================
 async function loadCategories() {
 
     const parts = window.location.pathname.split("/").filter(Boolean);
     const magazineIndex = parts.indexOf("magazines");
+
+    if (magazineIndex === -1 || !parts[magazineIndex + 1]) return;
+
     const folderName = decodeURIComponent(parts[magazineIndex + 1]);
 
     const response = await fetch(
         `https://api.github.com/repos/${USER}/${REPO}/contents/magazines/${folderName}`
     );
 
-    const folders = await response.json();
-    if (!Array.isArray(folders)) return;
+    const items = await response.json();
+    if (!Array.isArray(items)) return;
 
-    for (const folder of folders) {
+    for (const item of items) {
 
-        if (folder.type !== "dir") continue;
+        if (item.type !== "dir") continue;
 
         const card = document.createElement("a");
         card.className = "magazine-card";
         card.href = "#";
 
-        card.innerHTML = `
-            <div class="card-cover">
-                <h2>${folder.name}</h2>
-            </div>
-        `;
+        card.innerHTML = `<h2>${item.name}</h2>`;
 
         card.addEventListener("click", (e) => {
             e.preventDefault();
@@ -222,19 +168,21 @@ async function loadCategories() {
             categoriesContainer.style.display = "none";
             document.getElementById("category-view").style.display = "block";
 
-            loadCategory(folderName, folder.name);
+            loadCategory(folderName, item.name);
         });
 
         categoriesContainer.appendChild(card);
     }
 }
 
+if (categoriesContainer) loadCategories();
+
+// =========================
+// LOAD CATEGORY
+// =========================
 async function loadCategory(magazineName, categoryName) {
 
-    if (!piecesContainer || !categoryTitle) return;
-
     piecesContainer.innerHTML = "";
-
     categoryTitle.textContent = categoryName;
 
     try {
@@ -243,59 +191,62 @@ async function loadCategory(magazineName, categoryName) {
             `https://api.github.com/repos/${USER}/${REPO}/contents/magazines/${magazineName}/${categoryName}`
         );
 
-        const folders = await response.json();
+        const items = await response.json();
+        if (!Array.isArray(items)) return;
 
-        if (!Array.isArray(folders)) return;
-        
-        for (const item of folders) {
+        for (const item of items) {
 
-            // CASE 1: subfolder (piece system)
-            if (item.type === "dir") {
-                // existing piece logic stays here (unchanged)
-                continue;
+            if (item.type !== "dir") continue;
+
+            const pieceResponse = await fetch(
+                `https://api.github.com/repos/${USER}/${REPO}/contents/magazines/${magazineName}/${categoryName}/${item.name}`
+            );
+
+            const files = await pieceResponse.json();
+
+            const descriptionFile = files.find(f => f.name === "description.txt");
+
+            let description = "";
+
+            if (descriptionFile) {
+                const res = await fetch(descriptionFile.download_url);
+                description = await res.text();
             }
 
-            // CASE 2: direct media inside category (NEW)
-            if (item.type === "file") {
+            const mediaFiles = files.filter(f =>
+                f.name.match(/\.(png|jpg|jpeg|webp|gif|mp4|webm|mov)$/i)
+            );
 
-                if (item.name === "description.txt") continue;
+            let mediaHTML = "";
 
-                const isImage = item.name.match(/\.(png|jpg|jpeg|webp|gif)$/i);
-                const isVideo = item.name.match(/\.(mp4|webm|mov)$/i);
+            for (const media of mediaFiles) {
 
-                if (!isImage && !isVideo) continue;
-
-                const card = document.createElement("div");
-                card.className = "piece-card";
-
-                let mediaHTML = "";
-
-                if (isImage) {
-                    mediaHTML += `<img src="${item.download_url}" alt="${item.name}">`;
+                if (media.name.match(/\.(png|jpg|jpeg|webp|gif)$/i)) {
+                    mediaHTML += `<img src="${media.download_url}" alt="${media.name}">`;
                 }
 
-                if (isVideo) {
+                if (media.name.match(/\.(mp4|webm|mov)$/i)) {
                     mediaHTML += `
                         <video controls>
-                            <source src="${item.download_url}">
+                            <source src="${media.download_url}">
                         </video>
                     `;
                 }
-
-                card.innerHTML = `
-                    ${mediaHTML}
-                    <h3>${item.name}</h3>
-                `;
-
-                piecesContainer.appendChild(card);
             }
+
+            const card = document.createElement("div");
+            card.className = "piece-card";
+
+            card.innerHTML = `
+                <h3>${item.name}</h3>
+                <p>${description}</p>
+                ${mediaHTML}
+            `;
+
+            piecesContainer.appendChild(card);
         }
 
     } catch (error) {
         console.error("Failed loading category", error);
     }
-}
-
-if (categoriesContainer) {
-    loadCategories();
 }
