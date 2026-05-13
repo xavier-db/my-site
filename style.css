@@ -3,7 +3,7 @@
     --primary-hover: rgb(74, 82, 48);
 
     --secondary: rgb(233, 229, 217);
-    --seconday-hover: rgb(220, 217, 205);
+    --secondary-hover: rgb(220, 217, 205);
 
     --accent: rgb(55, 40, 7);
     --accent-hover: rgb(42, 30, 5);
@@ -62,7 +62,7 @@ header nav a {
 }
 
 header nav a:hover {
-    color: var(--seconday-hover);
+    color: var(--secondary-hover);
     text-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
 }
 
@@ -145,7 +145,7 @@ p {
 }
 
 .button:hover {
-    background-color: var(--seconday-hover);
+    background-color: var(--secondary-hover);
     transform: translateY(-2px);
 }
 
@@ -199,7 +199,7 @@ main {
 .magazine-card:hover {
     transform: translateY(-4px);
 
-    background: var(--seconday-hover);
+    background: var(--secondary-hover);
 
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
@@ -234,4 +234,101 @@ footer {
 
     display: flex;
     justify-content: center;
+}
+
+footer span {
+    color: var(--secondary);
+}
+
+/* CONTACT */
+
+.contact_main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 120px 20px 60px;
+    background-color: var(--primary);
+}
+
+.contact_main form {
+    width: 100%;
+    max-width: 540px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.contact_main input[type="text"],
+.contact_main input[type="email"],
+.contact_main textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    background: var(--secondary);
+    color: var(--accent);
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+}
+
+.contact_main input[type="text"]:focus,
+.contact_main input[type="email"]:focus,
+.contact_main textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(55, 40, 7, 0.15);
+}
+
+.contact_main input::placeholder,
+.contact_main textarea::placeholder {
+    color: var(--accent);
+    opacity: 0.5;
+}
+
+.contact_main textarea {
+    min-height: 160px;
+    resize: vertical;
+}
+
+.contact_main input[type="file"] {
+    font-size: 0.9rem;
+    color: var(--secondary);
+    cursor: pointer;
+}
+
+.contact_main input[type="file"]::file-selector-button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    background: var(--secondary);
+    color: var(--accent);
+    font-weight: 600;
+    cursor: pointer;
+    margin-right: 12px;
+    transition: background-color 0.2s ease;
+}
+
+.contact_main input[type="file"]::file-selector-button:hover {
+    background-color: var(--secondary-hover);
+}
+
+.contact_main button[type="submit"] {
+    padding: 14px 24px;
+    border: none;
+    border-radius: 10px;
+    background: var(--secondary);
+    color: var(--accent);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s ease, background-color 0.25s ease;
+}
+
+.contact_main button[type="submit"]:hover {
+    background-color: var(--secondary-hover);
+    transform: translateY(-2px);
 }

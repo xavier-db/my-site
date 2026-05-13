@@ -55,6 +55,12 @@ document.addEventListener("DOMContentLoaded", () => {
             el.href = el.href.replace("siteRepo", REPO);
         }
     });
+
+    // Set contact form action dynamically from contactEmail variable
+    const contactForm = document.querySelector(".contactForm");
+    if (contactForm) {
+        contactForm.action = `https://formsubmit.co/${contactEmail}`;
+    }
 });
 
 const magazinesContainer = document.getElementById("magazines");
