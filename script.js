@@ -137,12 +137,8 @@ document.getElementById("category-view").style.display = "none";
 // LOAD CATEGORIES
 // =========================
 async function loadCategories() {
-
     const parts = window.location.pathname.split("/").filter(Boolean);
     const magazineIndex = parts.indexOf("magazines");
-
-    if (magazineIndex === -1 || !parts[magazineIndex + 1]) return;
-
     const folderName = decodeURIComponent(parts[magazineIndex + 1]);
 
     const response = await fetch(
@@ -156,17 +152,36 @@ async function loadCategories() {
 
         if (item.type !== "dir") continue;
 
+        // GET category description (e.g. Art/description.txt)
+        const categoryContents = await fetch(
+            `https://api.github.com/repos/${USER}/${REPO}/contents/magazines/${folderName}/${item.name}`
+        );
+
+        const categoryFiles = await categoryContents.json();
+
+        const descFile = categoryFiles.find(f => f.name === "description.txt");
+
+        let description = "";
+
+        if (descFile) {
+            const res = await fetch(descFile.download_url);
+            description = await res.text();
+        }
+
         const card = document.createElement("a");
         card.className = "magazine-card";
         card.href = "#";
 
-        card.innerHTML = `<h2>${item.name}</h2>`;
+        card.innerHTML = `
+            <h2>${item.name}</h2>
+            <p>${description}</p>
+        `;
 
         card.addEventListener("click", (e) => {
             e.preventDefault();
 
-            categoriesContainer.style.display = "none";
             document.getElementById("category-view").style.display = "block";
+            categoriesContainer.style.display = "none";
 
             loadCategory(folderName, item.name);
         });
