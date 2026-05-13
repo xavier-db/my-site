@@ -91,7 +91,11 @@ async function loadMagazinePage() {
     if (!magazineNameElement || !descriptionElement) return;
 
     const parts = window.location.pathname.split("/").filter(Boolean);
-    const folderName = decodeURIComponent(parts[parts.length - 1]);
+    const magazineIndex = parts.indexOf("magazines");
+
+    if (magazineIndex === -1 || !parts[magazineIndex + 1]) return;
+
+    const folderName = decodeURIComponent(parts[magazineIndex + 1]);
     const displayName = folderName.replace(/-/g, " ");
 
     const fullTitle = `${displayName} | ${siteName}`;
@@ -177,40 +181,51 @@ const categoriesContainer = document.getElementById("categories");
 const piecesContainer = document.getElementById("pieces");
 const categoryTitle = document.getElementById("category-title");
 
+function showCategories() {
+    categoriesContainer.style.display = "grid";
+    document.getElementById("category-view").style.display = "none";
+}
+
+document.getElementById("back-button")?.addEventListener("click", showCategories);
+document.getElementById("category-view").style.display = "none";
+
 async function loadCategories() {
 
     const parts = window.location.pathname.split("/").filter(Boolean);
-    const folderName = decodeURIComponent(parts[parts.length - 1]);
+    const magazineIndex = parts.indexOf("magazines");
+    const folderName = decodeURIComponent(parts[magazineIndex + 1]);
 
-    try {
+    const response = await fetch(
+        `https://api.github.com/repos/${USER}/${REPO}/contents/magazines/${folderName}`
+    );
 
-        const response = await fetch(
-            `https://api.github.com/repos/${USER}/${REPO}/contents/magazines/${folderName}`
-        );
+    const folders = await response.json();
+    if (!Array.isArray(folders)) return;
 
-        const folders = await response.json();
+    for (const folder of folders) {
 
-        if (!Array.isArray(folders)) return;
+        if (folder.type !== "dir") continue;
 
-        for (const folder of folders) {
+        const card = document.createElement("a");
+        card.className = "magazine-card";
+        card.href = "#";
 
-            // only category folders
-            if (folder.type !== "dir") continue;
+        card.innerHTML = `
+            <div class="card-cover">
+                <h2>${folder.name}</h2>
+            </div>
+        `;
 
-            const card = document.createElement("div");
+        card.addEventListener("click", (e) => {
+            e.preventDefault();
 
-            card.className = "magazine-card";
-            card.textContent = folder.name;
+            categoriesContainer.style.display = "none";
+            document.getElementById("category-view").style.display = "block";
 
-            card.addEventListener("click", () => {
-                loadCategory(folderName, folder.name);
-            });
+            loadCategory(folderName, folder.name);
+        });
 
-            categoriesContainer.appendChild(card);
-        }
-
-    } catch (error) {
-        console.error("Failed loading categories", error);
+        categoriesContainer.appendChild(card);
     }
 }
 
