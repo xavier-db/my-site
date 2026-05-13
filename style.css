@@ -162,6 +162,7 @@ p {
     grid-template-columns: repeat(3, 1fr);
     gap: 40px;
     padding-top: 20px;
+    padding-bottom: 20px;
     margin: 0 10px 0 10px;
 }
 
