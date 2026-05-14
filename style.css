@@ -362,6 +362,37 @@ main {
     max-width: 800px;
 }
 
+.back-button {
+    padding: 12px 24px;
+
+    border: 1.5px solid var(--sage);
+    border-radius: 50px;
+
+    background: transparent;
+    color: var(--sage);
+
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 9999;
+}
+
+.back-button:hover {
+    background: var(--sage);
+    color: white;
+    box-shadow: 0 4px 16px rgba(107, 145, 122, 0.25);
+}
+
 /* FOOTER */
 
 footer {
@@ -575,7 +606,7 @@ footer span {
 
 /* BACK BUTTON */
 
-#back-button {
+#back-button, #staff-back {
     margin-bottom: 25px;
 
     padding: 10px 22px;
@@ -596,7 +627,7 @@ footer span {
     transition: all 0.3s ease;
 }
 
-#back-button:hover {
+#back-button:hover, #staff-back:hover {
     background: var(--sage);
     color: white;
     border-color: var(--sage);
