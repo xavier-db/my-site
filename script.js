@@ -350,7 +350,7 @@ async function loadStaff() {
         }
 
         const card = document.createElement("a");
-        card.href = `/staffs-work/${folder.name}/`;
+        card.href = `staffs-work/${folder.name}/`;
         card.className = "magazine-card";
 
         card.innerHTML = `
@@ -371,24 +371,26 @@ async function loadStaffPage() {
 
     if (!nameEl || !descEl || !heroEl) return;
 
+    mediaContainer.innerHTML = "";
+    descEl.textContent = "";
+
     const parts = window.location.pathname.split("/").filter(Boolean);
-    const staffIndex = parts.indexOf("staff");
+    const staffIndex = parts.findIndex(p => p === "staffs-work");
 
     if (staffIndex === -1 || !parts[staffIndex + 1]) return;
 
     const folderName = decodeURIComponent(parts[staffIndex + 1]);
 
-    nameEl.textContent = folderName.replace(/-/g, " ");
     const displayName = folderName.replace(/-/g, " ");
-    document.title = `${displayName} | ${siteName}`;
     nameEl.textContent = displayName;
+    document.title = `${displayName} | ${siteName}`;
 
     heroEl.style.backgroundImage = `url('assets/staffImage.JPG')`;
 
     try {
 
         const response = await fetch(
-            `https://api.github.com/repos/${USER}/${REPO}/contents/staff/${folderName}`
+            `https://api.github.com/repos/${USER}/${REPO}/contents/staffs-work/${folderName}`
         );
 
         const files = await response.json();
