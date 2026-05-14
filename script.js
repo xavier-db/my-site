@@ -1,6 +1,6 @@
 const USER = "xavier-db";
 const REPO = "my-site";
-const siteName = "Xavier: Sample Site";
+const siteName = "Elysian: To Be Seen";
 const contactEmail = "xfakter7@gmail.com";
 
 // HEADER
