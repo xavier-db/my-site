@@ -318,3 +318,19 @@ async function loadCategory(magazineName, categoryName) {
         console.error("Failed loading category", error);
     }
 }
+
+// GUIDE / RULES (static HTML version)
+
+const guideOpenButton = document.getElementById("guide-open-button");
+const guideBackButton = document.getElementById("guide-back-button");
+const guideView = document.getElementById("guide-view");
+
+guideOpenButton?.addEventListener("click", () => {
+    guideOpenButton.style.display = "none";
+    guideView.style.display = "block";
+});
+
+guideBackButton?.addEventListener("click", () => {
+    guideView.style.display = "none";
+    guideOpenButton.style.display = "inline-block";
+});

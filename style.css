@@ -67,6 +67,11 @@ header {
 }
 
 header nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 10px 18px;
+
     margin-right: 5%;
 }
 
@@ -81,7 +86,7 @@ header h1 {
 
 header nav a {
     color: rgba(253, 248, 243, 0.6);
-    margin-left: 28px;
+    margin-left: 0;
 
     text-decoration: none;
     display: inline-block;
@@ -196,7 +201,7 @@ p {
 .centered-content p {
     font-family: var(--font-body);
     font-size: clamp(1rem, 2vw, 1.12rem);
-    max-width: 480px;
+    max-width: 420px;
     margin: 0 auto 36px;
     opacity: 0.75;
     line-height: 1.75;
@@ -218,7 +223,7 @@ p {
     font-family: var(--font-body);
     font-size: clamp(1rem, 2vw, 1.12rem);
     color: #fdf8f3;
-    max-width: 480px;
+    max-width: 420px;
     margin: 0 auto;
     opacity: 0.75;
     line-height: 1.75;
@@ -228,10 +233,17 @@ p {
     background: rgba(36, 26, 20, 0.6);
     backdrop-filter: blur(20px) saturate(1.3);
     -webkit-backdrop-filter: blur(20px) saturate(1.3);
-    border-radius: 28px;
-    padding: 64px 40px;
+
+    width: min(520px, calc(100% - 32px));
+
+    padding: 36px 28px;
+    border-radius: 22px;
+
     border: 1px solid rgba(253, 248, 243, 0.08);
+
     box-shadow: 0 24px 80px rgba(0, 0, 0, 0.2);
+
+    box-sizing: border-box;
 }
 
 /* BUTTON */
@@ -535,24 +547,30 @@ footer span {
 
 #category-title {
     color: var(--accent);
-    margin-bottom: 30px;
+    margin: 0 auto 30px;
     font-family: var(--font-display);
     font-size: 2.4rem;
     font-weight: 700;
     letter-spacing: -0.01em;
     position: relative;
-    display: inline-block;
+    text-align: center;
 }
 
 #category-title::after {
     content: "";
+
     position: absolute;
     bottom: -8px;
-    left: 0;
+    left: 50%;
+
     width: 48px;
     height: 3px;
+
     background: var(--terra);
+
     border-radius: 2px;
+
+    transform: translateX(-50%);
 }
 
 /* BACK BUTTON */
@@ -668,6 +686,76 @@ footer span {
     margin-top: 18px;
 }
 
+/* GUIDE */
+
+#guide-section {
+    padding: 70px 20px;
+    display: flex;
+    justify-content: center;
+}
+
+#guide-open-button,
+#guide-back-button {
+    padding: 12px 24px;
+
+    border: 1.5px solid var(--sage);
+    border-radius: 50px;
+
+    background: transparent;
+    color: var(--sage);
+
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+}
+
+#guide-open-button:hover,
+#guide-back-button:hover {
+    background: var(--sage);
+    color: white;
+}
+
+#guide-view {
+    width: min(720px, 100%);
+}
+
+#guide-back-button {
+    margin-bottom: 18px;
+}
+
+.guide-card {
+    background: white;
+    padding: 36px 32px;
+    border-radius: 20px;
+    border-top: 4px solid var(--sage);
+    box-shadow: 0 1px 3px rgba(26, 20, 18, 0.04),
+                0 8px 32px rgba(26, 20, 18, 0.06);
+
+    text-align: center;
+}
+
+.guide-card h2 {
+    margin-top: 0;
+    margin-bottom: 16px;
+
+    font-size: 2rem;
+}
+
+#guide-text {
+    max-width: 520px;
+    margin: 0 auto;
+    text-align: center;
+    white-space: normal;
+    line-height: 1.8;
+    opacity: 0.72;
+}
+
 /* MOBILE */
 
 @media (max-width: 700px) {
@@ -691,10 +779,26 @@ footer span {
 
     .centered-content h2,
     #magazine-name {
-        font-size: 2.4rem;
+        font-size: clamp(2.2rem, 5vw, 4rem);
     }
-
     .magazine-card {
         border-left-width: 3px;
+    }
+
+    header {
+        flex-direction: column;
+        padding: 14px 0;
+    }
+
+    header h1 {
+        margin: 0;
+        text-align: center;
+        width: 100%;
+    }
+
+    header nav {
+        margin: 0;
+        width: 100%;
+        justify-content: center;
     }
 }
