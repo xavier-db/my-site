@@ -29,15 +29,29 @@
 html, body {
     margin: 0;
     padding: 0;
-    overscroll-behavior: none;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 body {
     display: flex;
+    flex-direction: column;
     min-height: 100vh;
     overflow-anchor: none;
     font-family: var(--font-body);
-    background: linear-gradient(168deg, #fdf8f3 0%, #fef5ee 35%, #fdf8f5 65%, #f9f3ed 100%);
+
+    background: linear-gradient(
+        168deg,
+        #fdf8f3 0%,
+        #fef5ee 35%,
+        #fdf8f5 65%,
+        #f9f3ed 100%
+    );
+
     background-attachment: fixed;
 }
 
@@ -136,12 +150,9 @@ header nav a.active::after {
 
 .hero {
     display: flex;
-    height: 100svh;
-
-    background-size: cover;
-    background-position: center;
-
-    position: relative;
+    min-height: 100svh;
+    width: 100%;
+    overflow: hidden;
 }
 
 .hero::before {
@@ -289,6 +300,8 @@ p {
 
 main {
     background-color: transparent;
+    width: 100%;
+    overflow-x: hidden;
 }
 
 #magazines {
