@@ -318,7 +318,7 @@ async function loadCategory(magazineName, categoryName) {
 }
 
 const staffContainer = document.getElementById("staff-container");
-if (!staffContainer) return;
+if (staffContainer) loadStaff();
 
 async function loadStaff() {
 
@@ -361,8 +361,6 @@ async function loadStaff() {
         staffContainer.appendChild(card);
     }
 }
-
-if (staffContainer) loadStaff();
 
 async function loadStaffPage() {
 
@@ -437,10 +435,6 @@ async function loadStaffPage() {
 
 if (document.getElementById("staff-name")) {
     loadStaffPage();
-}
-
-if (document.getElementById("staff-container")) {
-    loadStaff();
 }
 
 // GUIDE / RULES
