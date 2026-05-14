@@ -317,156 +317,102 @@ async function loadCategory(magazineName, categoryName) {
     }
 }
 
-let staffContainer = null;
-let staffLocked = false;
-let staffLoaded = false;
+let staffContainer;
 
 document.addEventListener("DOMContentLoaded", () => {
     staffContainer = document.getElementById("staff-container");
-
     if (!staffContainer) return;
 
-    staffContainer.style.display = "grid";
-    loadStaff();
+    loadStaffList();
 });
 
-async function loadStaff() {
-
-    if (!staffContainer) return;
-    if (staffLoaded) return;
-
-    staffLoaded = true;
-
-    const response = await fetch(
+async function loadStaffList() {
+    const res = await fetch(
         `https://api.github.com/repos/${USER}/${REPO}/contents/staffs-work`
     );
 
-    const folders = await response.json();
+    const folders = await res.json();
     if (!Array.isArray(folders)) return;
 
     for (const folder of folders) {
-
         if (folder.type !== "dir") continue;
 
-        const folderResponse = await fetch(
-            `https://api.github.com/repos/${USER}/${REPO}/contents/staffs-work/${folder.name}`
-        );
-
-        const files = await folderResponse.json();
-
-        const descFile = files.find(f => f.name === "description.txt");
-
-        let description = "";
-        if (descFile) {
-            const res = await fetch(descFile.download_url);
-            description = await res.text();
-        }
-
         const card = document.createElement("a");
-        card.href = "#";
+
+        card.href = `staffs-work/${folder.name}/index.html`;
         card.className = "magazine-card";
 
         card.innerHTML = `
             <h2>${folder.name.replace(/-/g, " ")}</h2>
-            <p>${description}</p>
+            <p>Open</p>
         `;
-
-        card.addEventListener("click", (e) => {
-            e.preventDefault();
-
-            if (staffLocked) return;
-            staffLocked = true;
-
-            staffContainer.style.display = "none";
-            document.getElementById("staff-back").style.display = "block";
-
-            loadStaffPage(folder.name);
-        });
 
         staffContainer.appendChild(card);
     }
 }
 
-async function loadStaffPage(folderName) {
-
+document.addEventListener("DOMContentLoaded", async () => {
     const nameEl = document.getElementById("staff-name");
-    const descEl = document.querySelector(".description");
-    const heroEl = document.querySelector(".hero");
-    const mediaContainer = document.getElementById("staff-media");
+    const descEl = document.querySelector(".staff-description");
+    const mediaEl = document.getElementById("staff-media");
 
-    mediaContainer.innerHTML = "";
-    descEl.textContent = "";
+    if (!nameEl || !descEl || !mediaEl) return;
 
-    const displayName = folderName.replace(/-/g, " ");
+    const parts = window.location.pathname.split("/").filter(Boolean);
+
+    // expects: staffs-work / Person / index.html
+    const personName = parts[parts.length - 2];
+    const displayName = personName.replace(/-/g, " ");
+
     nameEl.textContent = displayName;
     document.title = `${displayName} | ${siteName}`;
 
-    try {
-        const response = await fetch(
-            `https://api.github.com/repos/${USER}/${REPO}/contents/staffs-work/${folderName}`
-        );
+    mediaEl.innerHTML = "";
+    descEl.textContent = "";
 
-        const files = await response.json();
+    const res = await fetch(
+        `https://api.github.com/repos/${USER}/${REPO}/contents/staffs-work/${personName}`
+    );
 
-        const descFile = files.find(f => f.name === "description.txt");
+    const files = await res.json();
+    if (!Array.isArray(files)) return;
 
-        if (descFile) {
-            const res = await fetch(descFile.download_url);
-            descEl.textContent = await res.text();
-        }
+    // DESCRIPTION
+    const descFile = files.find(f => f.name === "description.txt");
 
-        const mediaFiles = files.filter(f =>
-            f.name.match(/\.(png|jpg|jpeg|webp|gif|mp4|webm|mov|mp3|wav|ogg|flac|m4a)$/i)
-        );
-
-        for (const media of mediaFiles) {
-            let el;
-
-            if (media.name.match(/\.(png|jpg|jpeg|webp|gif)$/i)) {
-                el = document.createElement("img");
-                el.src = media.download_url;
-            }
-
-            if (media.name.match(/\.(mp4|webm|mov)$/i)) {
-                el = document.createElement("video");
-                el.controls = true;
-                el.src = media.download_url;
-            }
-
-            if (media.name.match(/\.(mp3|wav|ogg|flac|m4a)$/i)) {
-                el = document.createElement("audio");
-                el.controls = true;
-                el.src = media.download_url;
-            }
-
-            if (el) mediaContainer.appendChild(el);
-        }
-
-    } catch (err) {
-        console.error("Staff page load failed", err);
+    if (descFile) {
+        const text = await fetch(descFile.download_url).then(r => r.text());
+        descEl.textContent = text;
     }
-}
 
-document.getElementById("staff-back")?.addEventListener("click", () => {
+    // MEDIA
+    const mediaFiles = files.filter(f =>
+        /\.(png|jpg|jpeg|webp|gif|mp4|webm|mov|mp3|wav|ogg|flac|m4a)$/i.test(f.name)
+    );
 
-    staffLocked = false;
+    for (const file of mediaFiles) {
+        const url = file.download_url;
 
-    if (staffContainer) staffContainer.style.display = "grid";
+        if (/\.(png|jpg|jpeg|webp|gif)$/i.test(file.name)) {
+            const img = document.createElement("img");
+            img.src = url;
+            mediaEl.appendChild(img);
+        }
 
-    const backBtn = document.getElementById("staff-back");
-    if (backBtn) backBtn.style.display = "none";
+        else if (/\.(mp4|webm|mov)$/i.test(file.name)) {
+            const vid = document.createElement("video");
+            vid.controls = true;
+            vid.src = url;
+            mediaEl.appendChild(vid);
+        }
 
-    const nameEl = document.getElementById("staff-name");
-    if (nameEl) nameEl.textContent = "Staff's Work";
-
-    const descEl =
-        document.querySelector("#staff-description") ||
-        document.querySelector(".description");
-
-    if (descEl) descEl.textContent = "";
-
-    const media = document.getElementById("staff-media");
-    if (media) media.innerHTML = "";
+        else if (/\.(mp3|wav|ogg|flac|m4a)$/i.test(file.name)) {
+            const aud = document.createElement("audio");
+            aud.controls = true;
+            aud.src = url;
+            mediaEl.appendChild(aud);
+        }
+    }
 });
 
 // GUIDE / RULES
