@@ -571,7 +571,7 @@ footer span {
     padding: 28px 20px;
 }
 
-#category-view {
+#category-view, #staff-view {
     padding: 40px 20px 80px;
     background: transparent;
 }
@@ -800,7 +800,7 @@ footer span {
         letter-spacing: 0.06em;
     }
 
-    #category-view {
+    #category-view, #staff-view {
         padding: 30px 14px 60px;
     }
 
