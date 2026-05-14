@@ -355,17 +355,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     const nameEl = document.getElementById("staff-name");
     const descEl = document.querySelector(".staff-description");
     const mediaEl = document.getElementById("staff-media");
+    const backBtn = document.getElementById("staff-back");
 
     if (!nameEl || !descEl || !mediaEl) return;
 
     const parts = window.location.pathname.split("/").filter(Boolean);
 
-    // expects: staffs-work / Person / index.html
-    const personName = parts[parts.length - 2];
+    const personName = decodeURIComponent(parts[parts.length - 2]);
     const displayName = personName.replace(/-/g, " ");
 
     nameEl.textContent = displayName;
     document.title = `${displayName} | ${siteName}`;
+
+    // SHOW BACK BUTTON
+    if (backBtn) {
+        backBtn.style.display = "block";
+        backBtn.addEventListener("click", () => {
+            history.back();
+        });
+    }
 
     mediaEl.innerHTML = "";
     descEl.textContent = "";
