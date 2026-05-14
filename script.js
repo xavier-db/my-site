@@ -317,6 +317,8 @@ async function loadCategory(magazineName, categoryName) {
     }
 }
 
+let staffLocked = false;
+
 const staffContainer = document.getElementById("staff-container");
 if (staffContainer) loadStaff();
 
@@ -349,8 +351,8 @@ async function loadStaff() {
             description = await res.text();
         }
 
-        const card = document.createElement("a");
-        card.href = `staffs-work/${folder.name}/`;
+       const card = document.createElement("a");
+        card.href = "#";
         card.className = "magazine-card";
 
         card.innerHTML = `
@@ -358,37 +360,37 @@ async function loadStaff() {
             <p>${description}</p>
         `;
 
+        card.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            if (staffLocked) return;
+            staffLocked = true;
+
+            document.getElementById("staff-back").style.display = "block";
+            staffContainer.style.pointerEvents = "none";
+
+            loadStaffPage(folder.name);
+        });
+
         staffContainer.appendChild(card);
     }
 }
 
-async function loadStaffPage() {
+async function loadStaffPage(folderName) {
 
     const nameEl = document.getElementById("staff-name");
     const descEl = document.querySelector(".description");
     const heroEl = document.querySelector(".hero");
     const mediaContainer = document.getElementById("staff-media");
 
-    if (!nameEl || !descEl || !heroEl) return;
-
     mediaContainer.innerHTML = "";
     descEl.textContent = "";
-
-    const parts = window.location.pathname.split("/").filter(Boolean);
-    const staffIndex = parts.findIndex(p => p === "staffs-work");
-
-    if (staffIndex === -1 || !parts[staffIndex + 1]) return;
-
-    const folderName = decodeURIComponent(parts[staffIndex + 1]);
 
     const displayName = folderName.replace(/-/g, " ");
     nameEl.textContent = displayName;
     document.title = `${displayName} | ${siteName}`;
 
-    heroEl.style.backgroundImage = `url('assets/staffImage.JPG')`;
-
     try {
-
         const response = await fetch(
             `https://api.github.com/repos/${USER}/${REPO}/contents/staffs-work/${folderName}`
         );
@@ -407,7 +409,6 @@ async function loadStaffPage() {
         );
 
         for (const media of mediaFiles) {
-
             let el;
 
             if (media.name.match(/\.(png|jpg|jpeg|webp|gif)$/i)) {
@@ -427,9 +428,7 @@ async function loadStaffPage() {
                 el.src = media.download_url;
             }
 
-            if (el && mediaContainer) {
-                mediaContainer.appendChild(el);
-            }
+            if (el) mediaContainer.appendChild(el);
         }
 
     } catch (err) {
@@ -437,9 +436,21 @@ async function loadStaffPage() {
     }
 }
 
-if (document.getElementById("staff-name")) {
-    loadStaffPage();
-}
+document.getElementById("staff-back")?.addEventListener("click", () => {
+
+    staffLocked = false;
+
+    document.getElementById("staff-back").style.display = "none";
+
+    staffContainer.style.pointerEvents = "auto";
+
+    // reset UI fully
+    document.getElementById("staff-name").textContent = "Staff's Work";
+    document.querySelector(".description").textContent = "";
+    document.getElementById("staff-media").innerHTML = "";
+
+    document.title = `Staff's Work | ${siteName}`;
+});
 
 // GUIDE / RULES
 
