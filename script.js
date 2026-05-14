@@ -366,8 +366,9 @@ async function loadStaff() {
             if (staffLocked) return;
             staffLocked = true;
 
+            staffContainer.style.display = "none";
+
             document.getElementById("staff-back").style.display = "block";
-            staffContainer.style.pointerEvents = "none";
 
             loadStaffPage(folder.name);
         });
@@ -440,16 +441,15 @@ document.getElementById("staff-back")?.addEventListener("click", () => {
 
     staffLocked = false;
 
-    document.getElementById("staff-back").style.display = "none";
-
+    // reset UI
+    staffContainer.style.display = "grid";
     staffContainer.style.pointerEvents = "auto";
 
-    // reset UI fully
+    document.getElementById("staff-back").style.display = "none";
+
     document.getElementById("staff-name").textContent = "Staff's Work";
     document.querySelector(".description").textContent = "";
     document.getElementById("staff-media").innerHTML = "";
-
-    document.title = `Staff's Work | ${siteName}`;
 });
 
 // GUIDE / RULES
