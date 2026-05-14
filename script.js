@@ -337,6 +337,15 @@ async function loadStaffList() {
     for (const folder of folders) {
         if (folder.type !== "dir") continue;
 
+        let description = "";
+
+        try {
+            const descRes = await fetch(
+                `https://raw.githubusercontent.com/${USER}/${REPO}/main/staffs-work/${folder.name}/description.txt`
+            );
+            if (descRes.ok) description = await descRes.text();
+        } catch {}
+
         const card = document.createElement("a");
 
         card.href = `staffs-work/${folder.name}/index.html`;
@@ -344,7 +353,7 @@ async function loadStaffList() {
 
         card.innerHTML = `
             <h2>${folder.name.replace(/-/g, " ")}</h2>
-            <p>Open</p>
+            <p>${description || "View work"}</p>
         `;
 
         staffContainer.appendChild(card);

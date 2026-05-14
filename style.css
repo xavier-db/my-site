@@ -153,6 +153,11 @@ header nav a.active::after {
     min-height: 100svh;
     width: 100%;
     overflow: hidden;
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
 }
 
 .hero::before {
@@ -797,6 +802,19 @@ footer span {
     white-space: normal;
     line-height: 1.8;
     opacity: 0.72;
+}
+
+#staff-media {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding: 20px;
+}
+
+#staff-media img {
+    max-width: 100%;
+    border-radius: 10px;
 }
 
 /* MOBILE */
