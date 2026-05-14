@@ -218,7 +218,6 @@ p {
     font-size: clamp(1rem, 2vw, 1.12rem);
     max-width: 420px;
     margin: 0 auto 36px;
-    opacity: 0.75;
     line-height: 1.75;
     font-weight: 400;
 }
@@ -365,7 +364,6 @@ main {
 
 .magazine-card p {
     margin: 0;
-    opacity: 0.55;
     color: var(--accent);
     font-size: 0.9rem;
     padding-top: 6px;
