@@ -350,7 +350,7 @@ async function loadStaff() {
         }
 
         const card = document.createElement("a");
-        card.href = `staffs-work/${folder.name}/`;
+        card.href = `/staffs-work/${folder.name}/`;
         card.className = "magazine-card";
 
         card.innerHTML = `
@@ -379,7 +379,9 @@ async function loadStaffPage() {
     const folderName = decodeURIComponent(parts[staffIndex + 1]);
 
     nameEl.textContent = folderName.replace(/-/g, " ");
-    document.title = `${folderName} | ${siteName}`;
+    const displayName = folderName.replace(/-/g, " ");
+    document.title = `${displayName} | ${siteName}`;
+    nameEl.textContent = displayName;
 
     heroEl.style.backgroundImage = `url('assets/staffImage.JPG')`;
 
