@@ -317,18 +317,25 @@ async function loadCategory(magazineName, categoryName) {
     }
 }
 
+let staffContainer = null;
 let staffLocked = false;
+let staffLoaded = false;
 
-const staffContainer = document.getElementById("staff-container");
+document.addEventListener("DOMContentLoaded", () => {
+    staffContainer = document.getElementById("staff-container");
 
-if (staffContainer) {
+    if (!staffContainer) return;
+
     staffContainer.style.display = "grid";
     loadStaff();
-}
+});
 
 async function loadStaff() {
 
     if (!staffContainer) return;
+    if (staffLoaded) return;
+
+    staffLoaded = true;
 
     const response = await fetch(
         `https://api.github.com/repos/${USER}/${REPO}/contents/staffs-work`
@@ -355,7 +362,7 @@ async function loadStaff() {
             description = await res.text();
         }
 
-       const card = document.createElement("a");
+        const card = document.createElement("a");
         card.href = "#";
         card.className = "magazine-card";
 
@@ -371,7 +378,6 @@ async function loadStaff() {
             staffLocked = true;
 
             staffContainer.style.display = "none";
-
             document.getElementById("staff-back").style.display = "block";
 
             loadStaffPage(folder.name);
@@ -442,14 +448,25 @@ async function loadStaffPage(folderName) {
 }
 
 document.getElementById("staff-back")?.addEventListener("click", () => {
+
     staffLocked = false;
 
-    staffContainer.style.display = "grid";
-    document.getElementById("staff-back").style.display = "none";
+    if (staffContainer) staffContainer.style.display = "grid";
 
-    document.getElementById("staff-name").textContent = "Staff's Work";
-    document.getElementById("staff-media").innerHTML = "";
-    document.querySelector(".description").textContent = "";
+    const backBtn = document.getElementById("staff-back");
+    if (backBtn) backBtn.style.display = "none";
+
+    const nameEl = document.getElementById("staff-name");
+    if (nameEl) nameEl.textContent = "Staff's Work";
+
+    const descEl =
+        document.querySelector("#staff-description") ||
+        document.querySelector(".description");
+
+    if (descEl) descEl.textContent = "";
+
+    const media = document.getElementById("staff-media");
+    if (media) media.innerHTML = "";
 });
 
 // GUIDE / RULES
