@@ -320,7 +320,11 @@ async function loadCategory(magazineName, categoryName) {
 let staffLocked = false;
 
 const staffContainer = document.getElementById("staff-container");
-if (staffContainer) loadStaff();
+
+if (staffContainer) {
+    staffContainer.style.display = "grid";
+    loadStaff();
+}
 
 async function loadStaff() {
 
@@ -438,18 +442,14 @@ async function loadStaffPage(folderName) {
 }
 
 document.getElementById("staff-back")?.addEventListener("click", () => {
-
     staffLocked = false;
 
-    // reset UI
     staffContainer.style.display = "grid";
-    staffContainer.style.pointerEvents = "auto";
-
     document.getElementById("staff-back").style.display = "none";
 
     document.getElementById("staff-name").textContent = "Staff's Work";
-    document.querySelector(".description").textContent = "";
     document.getElementById("staff-media").innerHTML = "";
+    document.querySelector(".description").textContent = "";
 });
 
 // GUIDE / RULES
