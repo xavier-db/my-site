@@ -325,7 +325,7 @@ async function loadStaff() {
     if (!staffContainer) return;
 
     const response = await fetch(
-        `https://api.github.com/repos/${USER}/${REPO}/contents/staff`
+        `https://api.github.com/repos/${USER}/${REPO}/contents/staffs-work`
     );
 
     const folders = await response.json();
@@ -336,7 +336,7 @@ async function loadStaff() {
         if (folder.type !== "dir") continue;
 
         const folderResponse = await fetch(
-            `https://api.github.com/repos/${USER}/${REPO}/contents/staff/${folder.name}`
+            `https://api.github.com/repos/${USER}/${REPO}/contents/staffs-work/${folder.name}`
         );
 
         const files = await folderResponse.json();
@@ -350,7 +350,7 @@ async function loadStaff() {
         }
 
         const card = document.createElement("a");
-        card.href = `staff/${folder.name}/`;
+        card.href = `staffs-work/${folder.name}/`;
         card.className = "magazine-card";
 
         card.innerHTML = `
