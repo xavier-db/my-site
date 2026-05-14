@@ -30,7 +30,6 @@ window.addEventListener("scroll", () => {
 });
 
 function animate() {
-    // smooth interpolation (removes jitter)
     current += (target - current) * 0.15;
 
     header.style.transform = `translateY(${current}px)`;
@@ -56,7 +55,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Set contact form action dynamically from contactEmail variable
     const contactForm = document.querySelector(".contactForm");
     if (contactForm) {
         contactForm.action = `https://formsubmit.co/${contactEmail}`;
@@ -74,6 +72,7 @@ async function loadMagazines() {
     );
 
     const folders = await response.json();
+    if (!Array.isArray(folders)) return;
 
     for (const folder of folders) {
 
@@ -197,7 +196,6 @@ async function loadCategories() {
 
         if (item.type !== "dir") continue;
 
-        // GET category description (e.g. Art/description.txt)
         const categoryContents = await fetch(
             `https://api.github.com/repos/${USER}/${REPO}/contents/magazines/${folderName}/${item.name}`
         );
@@ -319,7 +317,133 @@ async function loadCategory(magazineName, categoryName) {
     }
 }
 
-// GUIDE / RULES (static HTML version)
+const staffContainer = document.getElementById("staff-container");
+if (!staffContainer) return;
+
+async function loadStaff() {
+
+    if (!staffContainer) return;
+
+    const response = await fetch(
+        `https://api.github.com/repos/${USER}/${REPO}/contents/staff`
+    );
+
+    const folders = await response.json();
+    if (!Array.isArray(folders)) return;
+
+    for (const folder of folders) {
+
+        if (folder.type !== "dir") continue;
+
+        const folderResponse = await fetch(
+            `https://api.github.com/repos/${USER}/${REPO}/contents/staff/${folder.name}`
+        );
+
+        const files = await folderResponse.json();
+
+        const descFile = files.find(f => f.name === "description.txt");
+
+        let description = "";
+        if (descFile) {
+            const res = await fetch(descFile.download_url);
+            description = await res.text();
+        }
+
+        const card = document.createElement("a");
+        card.href = `staff/${folder.name}/`;
+        card.className = "magazine-card";
+
+        card.innerHTML = `
+            <h2>${folder.name.replace(/-/g, " ")}</h2>
+            <p>${description}</p>
+        `;
+
+        staffContainer.appendChild(card);
+    }
+}
+
+if (staffContainer) loadStaff();
+
+async function loadStaffPage() {
+
+    const nameEl = document.getElementById("staff-name");
+    const descEl = document.querySelector(".description");
+    const heroEl = document.querySelector(".hero");
+    const mediaContainer = document.getElementById("staff-media");
+
+    if (!nameEl || !descEl || !heroEl) return;
+
+    const parts = window.location.pathname.split("/").filter(Boolean);
+    const staffIndex = parts.indexOf("staff");
+
+    if (staffIndex === -1 || !parts[staffIndex + 1]) return;
+
+    const folderName = decodeURIComponent(parts[staffIndex + 1]);
+
+    nameEl.textContent = folderName.replace(/-/g, " ");
+    document.title = `${folderName} | ${siteName}`;
+
+    heroEl.style.backgroundImage = `url('assets/staffImage.JPG')`;
+
+    try {
+
+        const response = await fetch(
+            `https://api.github.com/repos/${USER}/${REPO}/contents/staff/${folderName}`
+        );
+
+        const files = await response.json();
+
+        const descFile = files.find(f => f.name === "description.txt");
+
+        if (descFile) {
+            const res = await fetch(descFile.download_url);
+            descEl.textContent = await res.text();
+        }
+
+        const mediaFiles = files.filter(f =>
+            f.name.match(/\.(png|jpg|jpeg|webp|gif|mp4|webm|mov|mp3|wav|ogg|flac|m4a)$/i)
+        );
+
+        for (const media of mediaFiles) {
+
+            let el;
+
+            if (media.name.match(/\.(png|jpg|jpeg|webp|gif)$/i)) {
+                el = document.createElement("img");
+                el.src = media.download_url;
+            }
+
+            if (media.name.match(/\.(mp4|webm|mov)$/i)) {
+                el = document.createElement("video");
+                el.controls = true;
+                el.src = media.download_url;
+            }
+
+            if (media.name.match(/\.(mp3|wav|ogg|flac|m4a)$/i)) {
+                el = document.createElement("audio");
+                el.controls = true;
+                el.src = media.download_url;
+            }
+
+            if (el && mediaContainer) {
+                mediaContainer.appendChild(el);
+            }
+        }
+
+    } catch (err) {
+        console.error("Staff page load failed", err);
+    }
+}
+
+if (document.getElementById("staff-name")) {
+    loadStaffPage();
+}
+
+if (document.getElementById("staff-container")) {
+    loadStaff();
+}
+
+// GUIDE / RULES
 
 const guideOpenButton = document.getElementById("guide-open-button");
 const guideBackButton = document.getElementById("guide-back-button");
