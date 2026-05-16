@@ -314,7 +314,7 @@ main {
 
 #magazines, #pages, #staff-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(2, minmax(300px, 1fr));
     gap: 24px;
     padding: 52px 40px;
     margin: 0;
@@ -809,6 +809,45 @@ footer span {
 #staff-media img {
     max-width: 100%;
     border-radius: 10px;
+}
+
+/* STAFF CARD WITH COVER IMAGE */
+
+.staff-card-cover {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    border-left: none !important;
+    overflow: hidden;
+}
+
+.staff-card-cover::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(26, 20, 18, 0.1) 0%,
+        rgba(26, 20, 18, 0.65) 100%
+    );
+    z-index: 0;
+    border-radius: inherit;
+}
+
+.staff-card-cover h2,
+.staff-card-cover p {
+    position: relative;
+    z-index: 1;
+    color: #fdf8f3 !important;
+}
+
+.staff-card-cover p {
+    opacity: 0.8;
 }
 
 /* MOBILE */

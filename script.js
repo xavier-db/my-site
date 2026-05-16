@@ -361,10 +361,30 @@ async function loadStaffList() {
             if (descRes.ok) description = await descRes.text();
         } catch {}
 
+        // Look for a cover image (cover.png, cover.jpg, cover.jpeg, etc.)
+        let coverUrl = null;
+
+        try {
+            const folderRes = await fetch(
+                `https://api.github.com/repos/${USER}/${REPO}/contents/staffs-work/${folder.name}`
+            );
+            const files = await folderRes.json();
+            if (Array.isArray(files)) {
+                const coverFile = files.find(f =>
+                    f.type === "file" && /^cover\.(png|jpe?g|webp|gif)$/i.test(f.name)
+                );
+                if (coverFile) coverUrl = coverFile.download_url;
+            }
+        } catch {}
+
         const card = document.createElement("a");
 
         card.href = `staffs-work/${folder.name}/index.html`;
-        card.className = "magazine-card";
+        card.className = coverUrl ? "magazine-card staff-card-cover" : "magazine-card";
+
+        if (coverUrl) {
+            card.style.backgroundImage = `url(${coverUrl})`;
+        }
 
         card.innerHTML = `
             <h2>${folder.name.replace(/-/g, " ")}</h2>
@@ -445,20 +465,4 @@ document.addEventListener("DOMContentLoaded", async () => {
             mediaEl.appendChild(aud);
         }
     }
-});
-
-// GUIDE / RULES
-
-const guideOpenButton = document.getElementById("guide-open-button");
-const guideBackButton = document.getElementById("guide-back-button");
-const guideView = document.getElementById("guide-view");
-
-guideOpenButton?.addEventListener("click", () => {
-    guideOpenButton.style.display = "none";
-    guideView.style.display = "block";
-});
-
-guideBackButton?.addEventListener("click", () => {
-    guideView.style.display = "none";
-    guideOpenButton.style.display = "inline-block";
 });
