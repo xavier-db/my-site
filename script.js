@@ -1,9 +1,8 @@
 const USER = "xavier-db";
 const REPO = "my-site";
-const siteName = "Elysian: To Be Seen";
 const contactEmail = "xfakter7@gmail.com";
 
-// HEADER
+// HEADER SCROLL
 
 const header = document.querySelector("header");
 
@@ -39,15 +38,9 @@ function animate() {
 
 animate();
 
-// Site name replacement and repo replacement
+// Repo replacement
 
 document.addEventListener("DOMContentLoaded", () => {
-
-    document.querySelectorAll(".siteName").forEach(el => {
-        if (el.textContent.includes("Site Name")) {
-            el.textContent = el.textContent.replace("Site Name", siteName);
-        }
-    });
 
     document.querySelectorAll(".siteRepo").forEach(el => {
         if (el.href.includes("siteRepo")) {
@@ -129,7 +122,7 @@ async function loadMagazinePage() {
     const displayName = folderName.replace(/-/g, " ");
 
     magazineNameElement.textContent = displayName;
-    document.title = `${displayName} | ${siteName}`;
+    document.title = `${displayName} | Elysian: To Be Seen`;
 
     try {
         const folderResponse = await fetch(
@@ -229,6 +222,28 @@ async function loadCategories() {
             loadCategory(folderName, item.name);
         });
 
+        categoriesContainer.appendChild(card);
+    }
+
+    // Static page links — outside the loop so they only appear once
+    const staticPages = [
+        {
+            href: `/${REPO}/creative-person-of-the-week/index.html`,
+            title: "Creative Person of the Week",
+            description: "Weekly highlight of a standout artist, with a brief Q&A."
+        },
+        {
+            href: `/${REPO}/guide.html`,
+            title: "Guide & Rules",
+            description: "How to pitch or submit work, our editorial standards, and community values."
+        }
+    ];
+
+    for (const page of staticPages) {
+        const card = document.createElement("a");
+        card.className = "magazine-card";
+        card.href = page.href;
+        card.innerHTML = `<h2>${page.title}</h2><p>${page.description}</p>`;
         categoriesContainer.appendChild(card);
     }
 }
@@ -374,7 +389,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const displayName = personName.replace(/-/g, " ");
 
     nameEl.textContent = displayName;
-    document.title = `${displayName} | ${siteName}`;
+    document.title = `${displayName} | Elysian: To Be Seen`;
 
     // SHOW BACK BUTTON
     if (backBtn) {

@@ -308,7 +308,7 @@ main {
     overflow-x: hidden;
 }
 
-#magazines {
+#magazines, #pages {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 24px;
@@ -579,7 +579,7 @@ footer span {
 
 #categories {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 24px;
 
     margin: 20px;
@@ -859,5 +859,9 @@ footer span {
         margin: 0;
         width: 100%;
         justify-content: center;
+    }
+
+    #categories {
+        grid-template-columns: 1fr;
     }
 }

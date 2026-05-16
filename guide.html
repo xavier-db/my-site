@@ -3,41 +3,147 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title class="siteName">placeholder | Site Name</title>
-
+    <title>Guide & Rules | Elysian: To Be Seen</title>
     <link rel="stylesheet" href="../../style.css">
+    <style>
+      .guide-hero {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100svh;
+        width: 100%;
+        padding: 120px 24px 80px;
+        box-sizing: border-box;
+        background: linear-gradient(
+          168deg,
+          #fdf8f3 0%,
+          #fef5ee 35%,
+          #fdf8f5 65%,
+          #f9f3ed 100%
+        );
+      }
+
+      .guide-inner {
+        width: min(720px, 100%);
+        display: flex;
+        flex-direction: column;
+        gap: 48px;
+      }
+
+      .guide-page-title {
+        font-family: var(--font-display);
+        font-size: clamp(2.6rem, 6vw, 4.2rem);
+        font-weight: 800;
+        color: var(--accent);
+        letter-spacing: -0.02em;
+        line-height: 1.05;
+        margin: 0 0 4px;
+      }
+
+      .guide-page-subtitle {
+        font-family: var(--font-body);
+        font-size: 1rem;
+        color: var(--accent);
+        opacity: 0.5;
+        margin: 0;
+        line-height: 1.6;
+      }
+
+      .guide-block {
+        background: white;
+        border-radius: 20px;
+        padding: 36px 36px 32px;
+        border-top: 4px solid var(--terra);
+        box-shadow:
+          0 1px 3px rgba(26, 20, 18, 0.04),
+          0 8px 32px rgba(26, 20, 18, 0.06);
+      }
+
+      .guide-block:last-child {
+        border-top-color: var(--sage);
+      }
+
+      .guide-block h2 {
+        font-family: var(--font-display);
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--accent);
+        margin: 0 0 20px;
+        letter-spacing: -0.01em;
+      }
+
+      .guide-block ol,
+      .guide-block ul {
+        margin: 0;
+        padding-left: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .guide-block li {
+        font-family: var(--font-body);
+        font-size: 0.97rem;
+        color: var(--accent);
+        opacity: 0.75;
+        line-height: 1.75;
+      }
+
+      @media (max-width: 700px) {
+        .guide-hero {
+          padding: 100px 16px 60px;
+        }
+
+        .guide-block {
+          padding: 28px 22px 24px;
+        }
+      }
+    </style>
   </head>
   <body>
     <header>
-        <h1 class="siteName">Site Name</h1>
-
-        <nav>
-            <a class="siteRepo" href="/siteRepo/index.html">Home</a>
-            <a class="siteRepo" href="/siteRepo/about.html">About</a>
-            <a class="siteRepo" href="/siteRepo/staff.html">Staff's Work</a>
-            <a class="siteRepo" href="/siteRepo/contact.html">Contact</a>
-        </nav>
+      <h1>Elysian: To Be Seen</h1>
+      <nav>
+        <a class="siteRepo" href="/siteRepo/index.html">Home</a>
+        <a class="siteRepo" href="/siteRepo/about.html">About</a>
+        <a class="siteRepo" href="/siteRepo/staff.html">Staff's Work</a>
+        <a class="siteRepo" href="/siteRepo/contact.html">Contact</a>
+      </nav>
     </header>
 
-    <main class="index_main">
-      <section class="hero">
-        <div class="centered-content">
-          <h2 id="staff-name">placeholder</h2>
+    <main>
+      <section class="guide-hero">
+        <div class="guide-inner">
 
-          <p class="staff-description">placeholder text</p>
+          <div>
+            <h1 class="guide-page-title">Guide & Rules</h1>
+            <p class="guide-page-subtitle">Everything you need to know before submitting your work.</p>
+          </div>
+
+          <div class="guide-block">
+            <h2>Submission Guidelines</h2>
+            <ol>
+              <li>Send a short pitch (100-200 words) via the Contact page.</li>
+              <li>Include 3-6 images (JPEG/PNG/WebP) or up to 3 pages of writing.</li>
+              <li>State any prior publication or exhibition if relevant.</li>
+            </ol>
+          </div>
+
+          <div class="guide-block">
+            <h2>Editorial Notes</h2>
+            <ul>
+              <li>We prioritise clarity, originality, and attention to craft.</li>
+              <li>Submissions may receive light edits for length and clarity.</li>
+              <li>Credits and captions should be accurate and complete.</li>
+            </ul>
+          </div>
+
         </div>
-      </section>
-
-      <hr class="separator">
-
-      <section id="staff-view">
-        <button id="staff-back">Back</button>
-        <div id="staff-media"></div>
       </section>
     </main>
 
     <footer>
-        <span class="siteName">&copy;  Site Name</span>
+      <span>&copy; 2026 Elysian: To Be Seen</span>
     </footer>
 
     <script src="../../script.js"></script>
