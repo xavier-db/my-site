@@ -158,6 +158,12 @@ header nav a.active::after {
     background-position: center;
     background-repeat: no-repeat;
     position: relative;
+
+    padding-top: 60px;
+    box-sizing: border-box;
+
+    align-items: center;
+    justify-content: center;
 }
 
 .hero::before {
@@ -198,7 +204,6 @@ p {
 /* CONTENT */
 
 .centered-content {
-    margin: auto;
     text-align: center;
     padding: 0 24px;
 }
@@ -250,7 +255,6 @@ p {
 
     width: min(520px, calc(100% - 32px));
 
-    padding: 36px 28px;
     border-radius: 22px;
 
     border: 1px solid rgba(253, 248, 243, 0.08);
