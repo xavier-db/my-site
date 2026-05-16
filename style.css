@@ -312,7 +312,7 @@ main {
     overflow-x: hidden;
 }
 
-#magazines, #pages {
+#magazines, #pages, #staff-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 24px;
@@ -320,15 +320,7 @@ main {
     margin: 0;
 }
 
-/* mobile */
-@media (max-width: 700px) {
-    #magazines {
-        grid-template-columns: 1fr;
-        padding: 32px 20px;
-    }
-}
-
-.magazine-card {
+.magazine-card, .staff-card {
     display: block;
 
     padding: 28px 24px 28px 28px;
@@ -867,5 +859,10 @@ footer span {
 
     #categories {
         grid-template-columns: 1fr;
+    }
+
+    #magazines, #staff-container {
+        grid-template-columns: 1fr;
+        padding: 32px 20px;
     }
 }
