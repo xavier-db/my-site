@@ -757,8 +757,7 @@ footer span {
     transition: all 0.3s ease;
 }
 
-#guide-open-button:hover,
-#guide-back-button:hover {
+#guide-open-button:hover, #guide-back-button:hover {
     background: var(--sage);
     color: white;
 }
@@ -848,6 +847,13 @@ footer span {
 
 .staff-card-cover p {
     opacity: 0.8;
+}
+
+.staff-card-cover:hover {
+    background-color: transparent;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 8px 24px rgba(200, 85, 58, 0.08), 0 20px 50px rgba(26, 20, 18, 0.1);
 }
 
 /* MOBILE */
