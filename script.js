@@ -411,19 +411,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     nameEl.textContent = displayName;
     document.title = `${displayName} | Elysian: To Be Seen`;
 
-    // SHOW BACK BUTTON (unless inside category-view parent)
+    // SHOW BACK BUTTON
     if (backBtn) {
-        const categoryView = document.getElementById("category-view");
-        const isInsideCategoryView = categoryView?.contains(backBtn);
-
-        if (!isInsideCategoryView) {
-            backBtn.style.display = "block";
-            backBtn.addEventListener("click", () => {
-                history.back();
-            });
-        } else {
-            backBtn.style.display = "none";
-        }
+        backBtn.style.display = "block";
+        backBtn.addEventListener("click", () => {
+            history.back();
+        });
     }
 
     mediaEl.innerHTML = "";
