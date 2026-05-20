@@ -906,7 +906,7 @@ footer span {
         grid-template-columns: 1fr;
     }
 
-    #magazines, #staff-container {
+    #magazines, #staff-container, #pages {
         grid-template-columns: 1fr;
         padding: 32px 20px;
     }
