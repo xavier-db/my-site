@@ -466,3 +466,94 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 });
+
+// PRELOAD ALL IMAGES
+
+async function preloadAllImages() {
+    const images = Array.from(document.images);
+
+    images.forEach((img) => {
+        const preload = new Image();
+        preload.src = img.src;
+    });
+}
+
+window.addEventListener("load", preloadAllImages);
+
+
+// CREATIVE PERSON OF THE WEEK
+
+async function loadCreativePersonOfTheWeek() {
+
+    const nameElement = document.getElementById("cpotw-name");
+    const descriptionElement = document.getElementById("cpotw-description");
+    const mediaContainer = document.getElementById("cpotw-media");
+
+    if (!nameElement || !descriptionElement || !mediaContainer) return;
+
+    const folder = "creative-person-of-the-week";
+
+    try {
+
+        const response = await fetch(
+            `https://api.github.com/repos/${USER}/${REPO}/contents/${folder}`
+        );
+
+        const files = await response.json();
+
+        const nameFile = files.find(file => file.name === "name.txt");
+        const descriptionFile = files.find(file => file.name === "description.txt");
+
+        if (nameFile) {
+            const res = await fetch(nameFile.download_url);
+            nameElement.textContent = await res.text();
+        }
+
+        if (descriptionFile) {
+            const res = await fetch(descriptionFile.download_url);
+            descriptionElement.textContent = await res.text();
+        }
+
+        const mediaFiles = files.filter(file =>
+            file.name.match(/\.(png|jpg|jpeg|webp|gif|mp4|webm|mp3|wav|ogg)$/i)
+        );
+
+        for (const file of mediaFiles) {
+
+            const extension = file.name.split(".").pop().toLowerCase();
+
+            if (["png", "jpg", "jpeg", "webp", "gif"].includes(extension)) {
+
+                const img = document.createElement("img");
+                img.src = file.download_url;
+                img.loading = "eager";
+
+                const preload = new Image();
+                preload.src = file.download_url;
+
+                mediaContainer.appendChild(img);
+
+            } else if (["mp4", "webm"].includes(extension)) {
+
+                const video = document.createElement("video");
+                video.src = file.download_url;
+                video.controls = true;
+
+                mediaContainer.appendChild(video);
+
+            } else if (["mp3", "wav", "ogg"].includes(extension)) {
+
+                const audio = document.createElement("audio");
+                audio.src = file.download_url;
+                audio.controls = true;
+
+                mediaContainer.appendChild(audio);
+            }
+        }
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+loadCreativePersonOfTheWeek();
