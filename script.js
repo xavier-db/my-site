@@ -56,6 +56,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const magazinesContainer = document.getElementById("magazines");
 
+// PRELOAD ALL IMAGES
+
+async function preloadAllImages() {
+    const images = Array.from(document.images);
+
+    images.forEach((img) => {
+        const preload = new Image();
+        preload.src = img.src;
+    });
+}
+
+window.addEventListener("load", preloadAllImages);
+
 // MAGAZINES
 
 async function loadMagazines() {
@@ -467,29 +480,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
-// PRELOAD ALL IMAGES
-
-async function preloadAllImages() {
-    const images = Array.from(document.images);
-
-    images.forEach((img) => {
-        const preload = new Image();
-        preload.src = img.src;
-    });
-}
-
-window.addEventListener("load", preloadAllImages);
-
-
 // CREATIVE PERSON OF THE WEEK
-
-async function loadCreativePersonOfTheWeek() {
+async function loadCPOTW() {
 
     const nameElement = document.getElementById("cpotw-name");
     const descriptionElement = document.getElementById("cpotw-description");
     const mediaContainer = document.getElementById("cpotw-media");
+    const backBtn = document.getElementById("staff-back");
 
     if (!nameElement || !descriptionElement || !mediaContainer) return;
+
+    if (backBtn) {
+        backBtn.style.display = "block";
+        backBtn.addEventListener("click", () => { history.back(); });
+    }
 
     const folder = "creative-person-of-the-week";
 
@@ -502,21 +506,33 @@ async function loadCreativePersonOfTheWeek() {
         const files = await response.json();
 
         const nameFile = files.find(file => file.name === "name.txt");
-        const descriptionFile = files.find(file => file.name === "description.txt");
-
         if (nameFile) {
             const res = await fetch(nameFile.download_url);
             nameElement.textContent = await res.text();
+            document.title = `${nameElement.textContent.trim()} | Elysian: To Be Seen`;
         }
 
+        const descriptionFile = files.find(file => file.name === "description.txt");
         if (descriptionFile) {
             const res = await fetch(descriptionFile.download_url);
             descriptionElement.textContent = await res.text();
         }
 
         const mediaFiles = files.filter(file =>
-            file.name.match(/\.(png|jpg|jpeg|webp|gif|mp4|webm|mp3|wav|ogg)$/i)
+            file.name.match(/\.(png|jpg|jpeg|webp|gif|mp4|webm|mov|mp3|wav|ogg|flac|m4a)$/i)
         );
+
+        // Preload all images first
+        const imageFiles = mediaFiles.filter(f => f.name.match(/\.(png|jpg|jpeg|webp|gif)$/i));
+        const preloadPromises = imageFiles.map(f => {
+            return new Promise(resolve => {
+                const preload = new Image();
+                preload.onload = resolve;
+                preload.onerror = resolve;
+                preload.src = f.download_url;
+            });
+        });
+        await Promise.all(preloadPromises);
 
         for (const file of mediaFiles) {
 
@@ -527,26 +543,20 @@ async function loadCreativePersonOfTheWeek() {
                 const img = document.createElement("img");
                 img.src = file.download_url;
                 img.loading = "eager";
-
-                const preload = new Image();
-                preload.src = file.download_url;
-
                 mediaContainer.appendChild(img);
 
-            } else if (["mp4", "webm"].includes(extension)) {
+            } else if (["mp4", "webm", "mov"].includes(extension)) {
 
                 const video = document.createElement("video");
                 video.src = file.download_url;
                 video.controls = true;
-
                 mediaContainer.appendChild(video);
 
-            } else if (["mp3", "wav", "ogg"].includes(extension)) {
+            } else if (["mp3", "wav", "ogg", "flac", "m4a"].includes(extension)) {
 
                 const audio = document.createElement("audio");
                 audio.src = file.download_url;
                 audio.controls = true;
-
                 mediaContainer.appendChild(audio);
             }
         }
@@ -556,4 +566,4 @@ async function loadCreativePersonOfTheWeek() {
     }
 }
 
-loadCreativePersonOfTheWeek();
+loadCPOTW();
