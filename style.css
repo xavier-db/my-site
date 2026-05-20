@@ -617,7 +617,7 @@ footer span {
 
 /* BACK BUTTON */
 
-#back-button, #staff-back {
+#back-button, #staff-back, #page-back-btn {
     margin-bottom: 25px;
 
     padding: 10px 22px;
@@ -638,7 +638,7 @@ footer span {
     transition: all 0.3s ease;
 }
 
-#back-button:hover, #staff-back:hover {
+#back-button:hover, #staff-back:hover, #page-back-btn:hover {
     background: var(--sage);
     color: white;
     border-color: var(--sage);

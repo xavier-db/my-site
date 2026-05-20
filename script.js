@@ -56,19 +56,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const magazinesContainer = document.getElementById("magazines");
 
-// PRELOAD ALL IMAGES
-
-async function preloadAllImages() {
-    const images = Array.from(document.images);
-
-    images.forEach((img) => {
-        const preload = new Image();
-        preload.src = img.src;
-    });
-}
-
-window.addEventListener("load", preloadAllImages);
-
 // MAGAZINES
 
 async function loadMagazines() {
@@ -480,7 +467,22 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
+// PRELOAD ALL IMAGES
+
+async function preloadAllImages() {
+    const images = Array.from(document.images);
+
+    images.forEach((img) => {
+        const preload = new Image();
+        preload.src = img.src;
+    });
+}
+
+window.addEventListener("load", preloadAllImages);
+
+
 // CREATIVE PERSON OF THE WEEK
+
 async function loadCPOTW() {
 
     const nameElement = document.getElementById("cpotw-name");
@@ -490,6 +492,7 @@ async function loadCPOTW() {
 
     if (!nameElement || !descriptionElement || !mediaContainer) return;
 
+    // Wire back button
     if (backBtn) {
         backBtn.style.display = "block";
         backBtn.addEventListener("click", () => { history.back(); });
@@ -505,6 +508,7 @@ async function loadCPOTW() {
 
         const files = await response.json();
 
+        // 1. Load name.txt first
         const nameFile = files.find(file => file.name === "name.txt");
         if (nameFile) {
             const res = await fetch(nameFile.download_url);
@@ -512,12 +516,14 @@ async function loadCPOTW() {
             document.title = `${nameElement.textContent.trim()} | Elysian: To Be Seen`;
         }
 
+        // 2. Load description.txt second
         const descriptionFile = files.find(file => file.name === "description.txt");
         if (descriptionFile) {
             const res = await fetch(descriptionFile.download_url);
             descriptionElement.textContent = await res.text();
         }
 
+        // 3. Load media files (images, video, audio) after text
         const mediaFiles = files.filter(file =>
             file.name.match(/\.(png|jpg|jpeg|webp|gif|mp4|webm|mov|mp3|wav|ogg|flac|m4a)$/i)
         );
