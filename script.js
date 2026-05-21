@@ -477,20 +477,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
-// PRELOAD ALL IMAGES
-
-async function preloadAllImages() {
-    const images = Array.from(document.images);
-
-    images.forEach((img) => {
-        const preload = new Image();
-        preload.src = img.src;
-    });
-}
-
-window.addEventListener("load", preloadAllImages);
-
-
 // CREATIVE PERSON OF THE WEEK
 
 async function loadCPOTW() {

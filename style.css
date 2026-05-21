@@ -320,7 +320,7 @@ main {
     margin: 0;
 }
 
-.magazine-card, .staff-card {
+.magazine-card {
     display: block;
 
     padding: 28px 24px 28px 28px;
@@ -371,37 +371,6 @@ main {
     padding: 10px 20px;
     opacity: 0.9;
     max-width: 800px;
-}
-
-.back-button {
-    padding: 12px 24px;
-
-    border: 1.5px solid var(--sage);
-    border-radius: 50px;
-
-    background: transparent;
-    color: var(--sage);
-
-    font-family: var(--font-body);
-    font-weight: 700;
-    font-size: 0.8rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-
-    cursor: pointer;
-
-    transition: all 0.3s ease;
-
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    z-index: 9999;
-}
-
-.back-button:hover {
-    background: var(--sage);
-    color: white;
-    box-shadow: 0 4px 16px rgba(107, 145, 122, 0.25);
 }
 
 /* FOOTER */
@@ -937,14 +906,86 @@ footer span {
     margin-top: 4px;
 }
 
-@media (max-width: 700px) {
-    .cpotw-section {
-        padding: 40px 20px 80px;
-    }
+.guide-hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100svh;
+    width: 100%;
+    padding: 120px 24px 80px;
+    box-sizing: border-box;
+    background: linear-gradient(
+        168deg,
+        #fdf8f3 0%,
+        #fef5ee 35%,
+        #fdf8f5 65%,
+        #f9f3ed 100%
+    );
+}
 
-    .cpotw-description {
-        font-size: 0.97rem;
-    }
+.guide-inner {
+    width: min(720px, 100%);
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+}
+
+.guide-page-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.6rem, 6vw, 4.2rem);
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin: 0 0 4px;
+}
+
+.guide-page-subtitle {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--accent);
+    opacity: 0.5;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.guide-block {
+    background: white;
+    border-radius: 20px;
+    padding: 36px 36px 32px;
+    border-top: 4px solid var(--terra);
+    box-shadow:
+        0 1px 3px rgba(26, 20, 18, 0.04),
+        0 8px 32px rgba(26, 20, 18, 0.06);
+}
+
+.guide-block:last-child {
+    border-top-color: var(--sage);
+}
+
+.guide-block h2 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 0 0 20px;
+    letter-spacing: -0.01em;
+}
+
+.guide-block ol, .guide-block ul {
+    margin: 0;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.guide-block li {
+    font-family: var(--font-body);
+    font-size: 0.97rem;
+    color: var(--accent);
+    opacity: 0.75;
+    line-height: 1.75;
 }
 
 /* MOBILE */
@@ -1000,5 +1041,21 @@ footer span {
     #magazines, #staff-container, #pages {
         grid-template-columns: 1fr;
         padding: 32px 20px;
+    }
+
+    .cpotw-section {
+        padding: 40px 20px 80px;
+    }
+
+    .cpotw-description {
+        font-size: 0.97rem;
+    }
+
+    .guide-hero {
+        padding: 100px 16px 60px;
+    }
+
+    .guide-block {
+        padding: 28px 22px 24px;
     }
 }
