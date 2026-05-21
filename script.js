@@ -1,6 +1,6 @@
 const USER = "xavier-db";
 const REPO = "my-site";
-const contactEmail = "xfakter7@gmail.com";
+const contactEmail = "elysian.magazine.official@gmail.com";
 
 // HEADER SCROLL
 
@@ -235,7 +235,6 @@ async function loadCategories() {
         categoriesContainer.appendChild(card);
     }
 
-    // Static page links — outside the loop so they only appear once
     const staticPages = [
         {
             href: `/${REPO}/creative-person-of-the-week/index.html`,
@@ -342,6 +341,7 @@ async function loadCategory(magazineName, categoryName) {
     }
 }
 
+// STAFF WORKS
 let staffContainer;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -359,6 +359,29 @@ async function loadStaffList() {
     const folders = await res.json();
     if (!Array.isArray(folders)) return;
 
+    // CUSTOM ORDER (ADD FOLDER NAMES FOR CUSTOM ORDER)
+    const customOrder = [
+        "J.S.Lynn",
+        "Yazia Inara"
+    ];
+
+    folders.sort((a, b) => {
+
+        const aIndex = customOrder.indexOf(a.name);
+        const bIndex = customOrder.indexOf(b.name);
+
+        if (aIndex !== -1 && bIndex !== -1) {
+            return aIndex - bIndex;
+        }
+
+        if (aIndex !== -1) return -1;
+
+        if (bIndex !== -1) return 1;
+
+        // Fallback alphabetical
+        return a.name.localeCompare(b.name);
+    });
+
     for (const folder of folders) {
         if (folder.type !== "dir") continue;
 
@@ -371,7 +394,6 @@ async function loadStaffList() {
             if (descRes.ok) description = await descRes.text();
         } catch {}
 
-        // Look for a cover image (cover.png, cover.jpg, cover.jpeg, etc.)
         let coverUrl = null;
 
         try {
@@ -488,7 +510,6 @@ async function loadCPOTW() {
 
     if (!nameElement || !descriptionElement || !mediaContainer) return;
 
-    // Wire back button
     if (backBtn) {
         backBtn.style.display = "block";
         backBtn.addEventListener("click", () => { history.back(); });
@@ -504,7 +525,7 @@ async function loadCPOTW() {
 
         const files = await response.json();
 
-        // 1. Load name.txt first
+        // Load name.txt first
         const nameFile = files.find(file => file.name === "name.txt");
         if (nameFile) {
             const res = await fetch(nameFile.download_url);
@@ -512,19 +533,18 @@ async function loadCPOTW() {
             document.title = `${nameElement.textContent.trim()} | Elysian: To Be Seen`;
         }
 
-        // 2. Load description.txt second
+        // Load description.txt second
         const descriptionFile = files.find(file => file.name === "description.txt");
         if (descriptionFile) {
             const res = await fetch(descriptionFile.download_url);
             descriptionElement.textContent = await res.text();
         }
 
-        // 3. Load media files (images, video, audio) after text
+        // Load media files after
         const mediaFiles = files.filter(file =>
             file.name.match(/\.(png|jpg|jpeg|webp|gif|mp4|webm|mov|mp3|wav|ogg|flac|m4a)$/i)
         );
 
-        // Preload all images first
         const imageFiles = mediaFiles.filter(f => f.name.match(/\.(png|jpg|jpeg|webp|gif)$/i));
         const preloadPromises = imageFiles.map(f => {
             return new Promise(resolve => {

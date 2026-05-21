@@ -1031,6 +1031,7 @@ footer span {
     header nav {
         margin: 0;
         width: 100%;
+        padding-top: 15px;
         justify-content: center;
     }
 
