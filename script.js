@@ -159,13 +159,22 @@ const categoriesContainer = document.getElementById("categories");
 const piecesContainer = document.getElementById("pieces");
 const categoryTitle = document.getElementById("category-title");
 
+let categoryOpen = false;
+
 function showCategories() {
+    categoryOpen = false;
     categoriesContainer.style.display = "grid";
     const categoryView = document.getElementById("category-view");
     if (categoryView) categoryView.style.display = "none";
 }
 
-document.getElementById("back-button")?.addEventListener("click", showCategories);
+document.getElementById("back-button")?.addEventListener("click", () => {
+    if (categoryOpen) {
+        showCategories();
+    } else {
+        history.back();
+    }
+});
 
 const categoryView = document.getElementById("category-view");
 if (categoryView) categoryView.style.display = "none";
@@ -216,6 +225,7 @@ async function loadCategories() {
         card.addEventListener("click", (e) => {
             e.preventDefault();
 
+            categoryOpen = true;
             document.getElementById("category-view").style.display = "block";
             categoriesContainer.style.display = "none";
 
