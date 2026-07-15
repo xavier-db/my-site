@@ -2,6 +2,54 @@ const USER = "xavier-db";
 const REPO = "my-site";
 const contactEmail = "elysian.magazine.official@gmail.com";
 
+// CUSTOM STAFF WORK ORDER
+const customOrder = [
+    "J.S.Lynn",
+    "Yazia Inara"
+];
+
+// CACHED FETCH
+
+const CACHE_PREFIX = "ghcache:";
+const DEFAULT_TTL_MINUTES = 30;
+
+async function cachedFetch(url, ttlMinutes = DEFAULT_TTL_MINUTES) {
+    const cacheKey = CACHE_PREFIX + url;
+
+    let cachedEntry = null;
+    try {
+        const cached = sessionStorage.getItem(cacheKey);
+        if (cached) cachedEntry = JSON.parse(cached);
+    } catch {}
+
+    if (cachedEntry && (Date.now() - cachedEntry.timestamp < ttlMinutes * 60 * 1000)) {
+        return cachedEntry.data;
+    }
+
+    try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`Fetch failed: ${res.status} for ${url}`);
+
+        const contentType = res.headers.get("content-type") || "";
+        const data = contentType.includes("application/json")
+            ? await res.json()
+            : await res.text();
+
+        try {
+            sessionStorage.setItem(cacheKey, JSON.stringify({ timestamp: Date.now(), data }));
+        } catch {
+            // sessionStorage may be full or unavailable
+        }
+
+        return data;
+    } catch (err) {
+        if (cachedEntry) {
+            return cachedEntry.data;
+        }
+        throw err;
+    }
+}
+
 // HEADER SCROLL
 
 const header = document.querySelector("header");
@@ -80,7 +128,7 @@ async function buildArticlesHTML(files, excludeNames = ["description.txt"]) {
     for (const file of articleFiles) {
         let text = "";
         try {
-            text = await fetch(file.download_url).then(r => r.text());
+            text = await cachedFetch(file.download_url);
         } catch {
             continue;
         }
@@ -106,11 +154,10 @@ async function buildArticlesHTML(files, excludeNames = ["description.txt"]) {
 
 async function loadMagazines() {
 
-    const response = await fetch(
+    const folders = await cachedFetch(
         `https://api.github.com/repos/${USER}/${REPO}/contents/magazines`
     );
 
-    const folders = await response.json();
     if (!Array.isArray(folders)) return;
 
     for (const folder of folders) {
@@ -118,19 +165,16 @@ async function loadMagazines() {
         if (folder.type !== "dir") continue;
         if (folder.name === "magazine-reference (DO NOT DELETE)") continue;
 
-        const folderResponse = await fetch(
+        const files = await cachedFetch(
             `https://api.github.com/repos/${USER}/${REPO}/contents/magazines/${folder.name}`
         );
-
-        const files = await folderResponse.json();
 
         const infoFile = files.find(f => f.name === "description.txt");
 
         let description = "";
 
         if (infoFile) {
-            const infoResponse = await fetch(infoFile.download_url);
-            description = await infoResponse.text();
+            description = await cachedFetch(infoFile.download_url);
         }
 
         const anchor = document.createElement("a");
@@ -171,25 +215,21 @@ async function loadMagazinePage() {
     document.title = `${displayName} | Elysian: To Be Seen`;
 
     try {
-        const folderResponse = await fetch(
+        const files = await cachedFetch(
             `https://api.github.com/repos/${USER}/${REPO}/contents/magazines/${folderName}`
         );
-
-        const files = await folderResponse.json();
 
         const imageFile = files.find(f =>
             f.name.match(/\.(png|jpg|jpeg|webp|gif)$/i)
         );
 
-        if (imageFile) {
+        if (imageFile && heroElement) {
             heroElement.style.backgroundImage = `url(${imageFile.download_url})`;
         }
 
-        const infoResponse = await fetch(
+        descriptionElement.textContent = await cachedFetch(
             `https://raw.githubusercontent.com/${USER}/${REPO}/main/magazines/${folderName}/description.txt`
         );
-
-        descriptionElement.textContent = await infoResponse.text();
 
     } catch {
         descriptionElement.textContent = "No description available.";
@@ -233,30 +273,26 @@ async function loadCategories() {
     const magazineIndex = parts.indexOf("magazines");
     const folderName = decodeURIComponent(parts[magazineIndex + 1]);
 
-    const response = await fetch(
+    const items = await cachedFetch(
         `https://api.github.com/repos/${USER}/${REPO}/contents/magazines/${folderName}`
     );
 
-    const items = await response.json();
     if (!Array.isArray(items)) return;
 
     for (const item of items) {
 
         if (item.type !== "dir") continue;
 
-        const categoryContents = await fetch(
+        const categoryFiles = await cachedFetch(
             `https://api.github.com/repos/${USER}/${REPO}/contents/magazines/${folderName}/${item.name}`
         );
-
-        const categoryFiles = await categoryContents.json();
 
         const descFile = categoryFiles.find(f => f.name === "description.txt");
 
         let description = "";
 
         if (descFile) {
-            const res = await fetch(descFile.download_url);
-            description = await res.text();
+            description = await cachedFetch(descFile.download_url);
         }
 
         const card = document.createElement("a");
@@ -315,30 +351,26 @@ async function loadCategory(magazineName, categoryName) {
 
     try {
 
-        const response = await fetch(
+        const items = await cachedFetch(
             `https://api.github.com/repos/${USER}/${REPO}/contents/magazines/${magazineName}/${categoryName}`
         );
 
-        const items = await response.json();
         if (!Array.isArray(items)) return;
 
         for (const item of items) {
 
             if (item.type !== "dir") continue;
 
-            const pieceResponse = await fetch(
+            const files = await cachedFetch(
                 `https://api.github.com/repos/${USER}/${REPO}/contents/magazines/${magazineName}/${categoryName}/${item.name}`
             );
-
-            const files = await pieceResponse.json();
 
             const descriptionFile = files.find(f => f.name === "description.txt");
 
             let description = "";
 
             if (descriptionFile) {
-                const res = await fetch(descriptionFile.download_url);
-                description = await res.text();
+                description = await cachedFetch(descriptionFile.download_url);
             }
 
             const mediaFiles = files.filter(f =>
@@ -400,18 +432,11 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function loadStaffList() {
-    const res = await fetch(
+    const folders = await cachedFetch(
         `https://api.github.com/repos/${USER}/${REPO}/contents/staffs-work`
     );
 
-    const folders = await res.json();
     if (!Array.isArray(folders)) return;
-
-    // CUSTOM ORDER (ADD FOLDER NAMES FOR CUSTOM ORDER)
-    const customOrder = [
-        "J.S.Lynn",
-        "Yazia Inara"
-    ];
 
     folders.sort((a, b) => {
 
@@ -436,19 +461,17 @@ async function loadStaffList() {
         let description = "";
 
         try {
-            const descRes = await fetch(
+            description = await cachedFetch(
                 `https://raw.githubusercontent.com/${USER}/${REPO}/main/staffs-work/${folder.name}/description.txt`
             );
-            if (descRes.ok) description = await descRes.text();
         } catch {}
 
         let coverUrl = null;
 
         try {
-            const folderRes = await fetch(
+            const files = await cachedFetch(
                 `https://api.github.com/repos/${USER}/${REPO}/contents/staffs-work/${folder.name}`
             );
-            const files = await folderRes.json();
             if (Array.isArray(files)) {
                 const coverFile = files.find(f =>
                     f.type === "file" && /^cover\.(png|jpe?g|webp|gif)$/i.test(f.name)
@@ -502,19 +525,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     mediaEl.innerHTML = "";
     descEl.textContent = "";
 
-    const res = await fetch(
+    const files = await cachedFetch(
         `https://api.github.com/repos/${USER}/${REPO}/contents/staffs-work/${personName}`
     );
 
-    const files = await res.json();
     if (!Array.isArray(files)) return;
 
     // DESCRIPTION
     const descFile = files.find(f => f.name === "description.txt");
 
     if (descFile) {
-        const text = await fetch(descFile.download_url).then(r => r.text());
-        descEl.textContent = text;
+        descEl.textContent = await cachedFetch(descFile.download_url);
     }
 
     // MEDIA
@@ -572,25 +593,22 @@ async function loadCPOTW() {
 
     try {
 
-        const response = await fetch(
+        const files = await cachedFetch(
             `https://api.github.com/repos/${USER}/${REPO}/contents/${folder}`
         );
-
-        const files = await response.json();
 
         // Load name.txt first
         const nameFile = files.find(file => file.name === "name.txt");
         if (nameFile) {
-            const res = await fetch(nameFile.download_url);
-            nameElement.textContent = await res.text();
+            const nameText = await cachedFetch(nameFile.download_url);
+            nameElement.textContent = nameText;
             document.title = `${nameElement.textContent.trim()} | Elysian: To Be Seen`;
         }
 
         // Load description.txt second
         const descriptionFile = files.find(file => file.name === "description.txt");
         if (descriptionFile) {
-            const res = await fetch(descriptionFile.download_url);
-            descriptionElement.textContent = await res.text();
+            descriptionElement.textContent = await cachedFetch(descriptionFile.download_url);
         }
 
         // Load media files after
@@ -640,7 +658,7 @@ async function loadCPOTW() {
         if (articlesHTML) {
             mediaContainer.insertAdjacentHTML("afterend", articlesHTML);
         }
-    } 
+    }
     catch (error) {
         console.error(error);
     }
