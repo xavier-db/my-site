@@ -988,6 +988,28 @@ footer span {
     line-height: 1.75;
 }
 
+.article-accordion-item {
+    border-top: 1px solid rgba(255,255,255,0.15);
+}
+.article-accordion-header {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 0.75rem 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+}
+.article-accordion-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+.article-accordion-body.open {
+    max-height: 2000px;
+}
+
 /* MOBILE */
 
 @media (max-width: 700px) {

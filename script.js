@@ -56,6 +56,52 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const magazinesContainer = document.getElementById("magazines");
 
+document.addEventListener("click", (e) => {
+    const header = e.target.closest(".article-accordion-header");
+    if (!header) return;
+
+    header.classList.toggle("open");
+    header.nextElementSibling?.classList.toggle("open");
+});
+
+async function buildArticlesHTML(files, excludeNames = ["description.txt"]) {
+    if (!Array.isArray(files)) return "";
+
+    const articleFiles = files.filter(f =>
+        f.type === "file" &&
+        /\.txt$/i.test(f.name) &&
+        !excludeNames.includes(f.name)
+    );
+
+    if (articleFiles.length === 0) return "";
+
+    let itemsHTML = "";
+
+    for (const file of articleFiles) {
+        let text = "";
+        try {
+            text = await fetch(file.download_url).then(r => r.text());
+        } catch {
+            continue;
+        }
+
+        const lines = text.split("\n");
+        const title = (lines[0] || file.name.replace(/\.txt$/i, "")).trim() || file.name.replace(/\.txt$/i, "");
+        const body = lines.slice(1).join("\n").trim();
+
+        itemsHTML += `
+            <div class="article-accordion-item">
+                <button type="button" class="article-accordion-header">${title}</button>
+                <div class="article-accordion-body">
+                    <p>${body.replace(/\n/g, "<br>")}</p>
+                </div>
+            </div>
+        `;
+    }
+
+    return itemsHTML ? `<div class="article-accordion">${itemsHTML}</div>` : "";
+}
+
 // MAGAZINES
 
 async function loadMagazines() {
@@ -324,6 +370,8 @@ async function loadCategory(magazineName, categoryName) {
                 }
             }
 
+            const articlesHTML = await buildArticlesHTML(files);
+
             const card = document.createElement("div");
             card.className = "piece-card";
 
@@ -497,6 +545,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             mediaEl.appendChild(aud);
         }
     }
+
+    const articlesHTML = await buildArticlesHTML(files);
+    if (articlesHTML) {
+        mediaEl.insertAdjacentHTML("afterend", articlesHTML);
+    }
 });
 
 // CREATIVE PERSON OF THE WEEK
@@ -583,7 +636,12 @@ async function loadCPOTW() {
             }
         }
 
-    } catch (error) {
+        const articlesHTML = await buildArticlesHTML(files, ["description.txt", "name.txt"]);
+        if (articlesHTML) {
+            mediaContainer.insertAdjacentHTML("afterend", articlesHTML);
+        }
+    } 
+    catch (error) {
         console.error(error);
     }
 }
