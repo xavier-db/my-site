@@ -995,12 +995,33 @@ footer span {
     width: 100%;
     background: none;
     border: none;
-    padding: 0.75rem 0;
+    padding: 0.75rem 32px 0.75rem 0;
     font: inherit;
     font-weight: 700;
+    font-size: 1.3rem;
     text-align: center;
     color: inherit;
     cursor: pointer;
+    position: relative;
+}
+.article-accordion-header::after {
+    content: "";
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    width: 9px;
+    height: 9px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    opacity: 0.55;
+    transform: translateY(-70%) rotate(45deg);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.article-accordion-header:hover::after {
+    opacity: 0.9;
+}
+.article-accordion-header.open::after {
+    transform: translateY(-30%) rotate(225deg);
 }
 .article-accordion-body {
     max-height: 0;
@@ -1011,7 +1032,7 @@ footer span {
     max-height: 2000px;
 }
 .article-accordion-body p {
-    margin: 0 20px 16px;
+    margin: 0 10% 16px;
     white-space: pre-wrap;
     tab-size: 4;
     -moz-tab-size: 4;
