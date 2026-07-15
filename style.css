@@ -987,15 +987,17 @@ footer span {
     opacity: 0.75;
     line-height: 1.75;
 }
- 
+
 .article-accordion-item {
-    border-top: 1px solid rgba(255,255,255,0.15);
+    border-top: none;
 }
 .article-accordion-header {
     width: 100%;
-    background: none;
+    background: rgba(200, 85, 58, 0.07);
     border: none;
-    padding: 0.75rem 32px 0.75rem 0;
+    border-radius: 10px;
+    padding: 0.85rem 40px 0.85rem 16px;
+    margin: 8px 0;
     font: inherit;
     font-weight: 700;
     font-size: 1.3rem;
@@ -1003,22 +1005,22 @@ footer span {
     color: inherit;
     cursor: pointer;
     position: relative;
+    transition: background 0.25s ease;
+}
+.article-accordion-header:hover {
+    background: rgba(200, 85, 58, 0.14);
 }
 .article-accordion-header::after {
     content: "";
     position: absolute;
-    right: 6px;
+    right: 16px;
     top: 50%;
-    width: 9px;
-    height: 9px;
-    border-right: 2px solid currentColor;
-    border-bottom: 2px solid currentColor;
-    opacity: 0.55;
+    width: 10px;
+    height: 10px;
+    border-right: 2.5px solid var(--terra);
+    border-bottom: 2.5px solid var(--terra);
     transform: translateY(-70%) rotate(45deg);
-    transition: transform 0.3s ease, opacity 0.3s ease;
-}
-.article-accordion-header:hover::after {
-    opacity: 0.9;
+    transition: transform 0.3s ease;
 }
 .article-accordion-header.open::after {
     transform: translateY(-30%) rotate(225deg);
