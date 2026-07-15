@@ -991,13 +991,15 @@ footer span {
 .article-accordion-item {
     border-top: none;
 }
+
 .article-accordion-header {
-    width: 100%;
+    display: block;
+    width: 90%;
     background: rgba(200, 85, 58, 0.07);
     border: none;
     border-radius: 10px;
-    padding: 0.85rem 40px 0.85rem 16px;
-    margin: 8px 0;
+    padding: 0.85rem 16px 0.85rem 40px;
+    margin: 8px auto;
     font: inherit;
     font-weight: 700;
     font-size: 1.3rem;
@@ -1010,29 +1012,34 @@ footer span {
 .article-accordion-header:hover {
     background: rgba(200, 85, 58, 0.14);
 }
+
 .article-accordion-header::after {
     content: "";
     position: absolute;
-    right: 16px;
+    left: 16px;
     top: 50%;
     width: 10px;
     height: 10px;
     border-right: 2.5px solid var(--terra);
     border-bottom: 2.5px solid var(--terra);
-    transform: translateY(-70%) rotate(45deg);
+    transform: translateY(-50%) rotate(-45deg);
     transition: transform 0.3s ease;
 }
+
 .article-accordion-header.open::after {
-    transform: translateY(-30%) rotate(225deg);
+    transform: translateY(-50%) rotate(45deg);
 }
+
 .article-accordion-body {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
 }
+
 .article-accordion-body.open {
     max-height: 2000px;
 }
+
 .article-accordion-body p {
     margin: 0 10% 16px;
     white-space: pre-wrap;
