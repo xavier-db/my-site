@@ -497,6 +497,29 @@ footer span {
     resize: vertical;
 }
 
+.contact_main textarea[name="trigger_warnings"] {
+    min-height: 70px;
+}
+
+.contact_main .permission-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--accent);
+    opacity: 0.75;
+    cursor: pointer;
+}
+
+.contact_main .permission-check input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    accent-color: var(--terra);
+}
+
 .contact_main input:focus,
 .contact_main textarea:focus {
     outline: none;
@@ -988,6 +1011,19 @@ footer span {
     line-height: 1.75;
 }
 
+.guide-block-text {
+    font-family: var(--font-body);
+    font-size: 0.97rem;
+    color: var(--accent);
+    opacity: 0.75;
+    line-height: 1.75;
+    margin: 0 0 14px;
+}
+
+.guide-block-text:last-child {
+    margin-bottom: 0;
+}
+
 .article-accordion-item {
     border-top: none;
 }
@@ -1045,6 +1081,60 @@ footer span {
     white-space: pre-wrap;
     tab-size: 4;
     -moz-tab-size: 4;
+}
+
+.tw-gate {
+    margin: 0 10% 16px;
+    padding: 20px 22px;
+    background: rgba(200, 85, 58, 0.06);
+    border: 1.5px dashed var(--terra-light);
+    border-radius: 14px;
+    text-align: center;
+}
+
+.tw-label {
+    margin: 0 0 14px;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+    color: var(--accent);
+}
+
+.tw-reveal-btn {
+    padding: 10px 24px;
+    border: none;
+    border-radius: 50px;
+    background: var(--terra);
+    color: white;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tw-reveal-btn:hover {
+    background: #b5472f;
+    transform: translateY(-1px);
+}
+
+.tw-content {
+    text-align: left;
+    margin-top: 18px;
+}
+
+.tw-content p {
+    margin: 0;
+    white-space: pre-wrap;
+    tab-size: 4;
+    -moz-tab-size: 4;
+}
+
+.tw-content.hidden {
+    display: none;
 }
 
 /* MOBILE */

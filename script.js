@@ -112,6 +112,23 @@ document.addEventListener("click", (e) => {
     header.nextElementSibling?.classList.toggle("open");
 });
 
+document.addEventListener("click", (e) => {
+    const revealBtn = e.target.closest(".tw-reveal-btn");
+    if (!revealBtn) return;
+
+    const gate = revealBtn.closest(".tw-gate");
+    const content = gate?.querySelector(".tw-content");
+    if (!content) return;
+
+    content.classList.remove("hidden");
+    revealBtn.remove();
+
+    // Accordion body height is capped via max-height; bump it so the
+    // now-visible content isn't clipped.
+    const accordionBody = gate.closest(".article-accordion-body");
+    if (accordionBody) accordionBody.style.maxHeight = "10000px";
+});
+
 async function buildArticlesHTML(files, excludeNames = ["description.txt"]) {
     if (!Array.isArray(files)) return "";
 
@@ -135,16 +152,48 @@ async function buildArticlesHTML(files, excludeNames = ["description.txt"]) {
 
         const lines = text.split("\n");
         const title = (lines[0] || file.name.replace(/\.txt$/i, "")).trim() || file.name.replace(/\.txt$/i, "");
-        const body = lines.slice(1).join("\n").trim();
 
-        itemsHTML += `
-            <div class="article-accordion-item">
-                <button type="button" class="article-accordion-header">${title}</button>
-                <div class="article-accordion-body">
-                    <p>${body.replace(/\n/g, "<br>")}</p>
+        // Look for a leading TW:/CW:/Trigger Warning: line right after the title.
+        const bodyLines = lines.slice(1);
+        const firstContentIdx = bodyLines.findIndex(l => l.trim() !== "");
+
+        let warning = null;
+        let contentLines = bodyLines;
+
+        if (firstContentIdx !== -1) {
+            const twMatch = bodyLines[firstContentIdx].trim().match(/^(?:TW|CW|Trigger Warnings?|Content Warnings?)\s*:\s*(.+)$/i);
+            if (twMatch) {
+                warning = twMatch[1].trim();
+                contentLines = bodyLines.slice(firstContentIdx + 1);
+            }
+        }
+
+        const body = contentLines.join("\n").trim();
+        const bodyHTML = `<p>${body.replace(/\n/g, "<br>")}</p>`;
+
+        if (warning) {
+            itemsHTML += `
+                <div class="article-accordion-item">
+                    <button type="button" class="article-accordion-header">${title}</button>
+                    <div class="article-accordion-body">
+                        <div class="tw-gate">
+                            <p class="tw-label">Content warning: ${warning}</p>
+                            <button type="button" class="tw-reveal-btn">Show content</button>
+                            <div class="tw-content hidden">${bodyHTML}</div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        `;
+            `;
+        } else {
+            itemsHTML += `
+                <div class="article-accordion-item">
+                    <button type="button" class="article-accordion-header">${title}</button>
+                    <div class="article-accordion-body">
+                        ${bodyHTML}
+                    </div>
+                </div>
+            `;
+        }
     }
 
     return itemsHTML ? `<div class="article-accordion">${itemsHTML}</div>` : "";

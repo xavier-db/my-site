@@ -22,18 +22,26 @@
             <form class="contactForm" action="https://formsubmit.co/xfakter7@gmail.com" method="POST" enctype="multipart/form-data">
                 <h2>Contact Us</h2>
                 <p>
-                    For collaboration, inquiries, or creative opportunities, feel free to send a message.
+                    Have a question or idea in mind? We'd love to talk to you! Feel free to reach out via Instagram,
+                    Discord, or email — or use this form to submit your work directly.
                 </p>
 
-                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="text" name="name" placeholder="Author's Name (will be displayed with your work)" required>
                 <input type="email" name="email" placeholder="Email Address" required>
-                <textarea name="message" placeholder="Write your message here" required></textarea>
+                <input type="text" name="age" placeholder="Age" required>
+                <textarea name="message" placeholder="Write your submission or message here"></textarea>
+                <textarea name="trigger_warnings" placeholder="Trigger warnings to note (leave blank if none)"></textarea>
+
+                <label class="permission-check">
+                    <input type="checkbox" name="edit_permission" value="Yes, I give permission for edits">
+                    I give Elysian permission to make edits to my work if needed (we'll always confirm any edits with you first)
+                </label>
 
                 <p style="font-weight: bold;">
-                    Attach images / audio files (10MB max file size)
+                    Attach your work / images / audio files (10MB max file size)
                 </p>
 
-                <input type="file" name="attachment" multiple accept=".png, .jpeg, .jpg, .gif, .webp, .mp3, .wav, .ogg, .flac, .m4a">
+                <input type="file" name="attachment" multiple accept=".png, .jpeg, .jpg, .gif, .webp, .mp3, .wav, .ogg, .flac, .m4a, .pdf, .doc, .docx, .txt">
                 <button type="submit">Send Message</button>
 
                 <input type="hidden" name="_next" value="https://xavier-db.github.io/my-site/index.html">
