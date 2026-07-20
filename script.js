@@ -110,6 +110,7 @@ document.addEventListener("click", (e) => {
 
     header.classList.toggle("open");
     header.nextElementSibling?.classList.toggle("open");
+    if (!header.nextElementSibling?.classList.contains("open")) header.nextElementSibling.style.maxHeight = "";
 });
 
 document.addEventListener("click", (e) => {
