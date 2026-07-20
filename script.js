@@ -1,6 +1,6 @@
 const USER = "xavier-db";
 const REPO = "my-site";
-const contactEmail = "elysian.magazine.official@gmail.com";
+const contactEmail = "xfakter7@gmail.com";
 
 // CUSTOM STAFF WORK ORDER
 const customOrder = [
