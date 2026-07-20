@@ -1209,3 +1209,39 @@ footer span {
         padding: 28px 22px 24px;
     }
 }
+.thank-you-inner {
+    text-align: center;
+    align-items: center;
+}
+
+.thank-you-icon {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto;
+    border-radius: 50%;
+    background: var(--sage);
+    color: white;
+    font-size: 2rem;
+    line-height: 72px;
+    box-shadow: 0 8px 28px rgba(107, 145, 122, 0.35);
+}
+
+.thank-you-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.thank-you-secondary {
+    background: transparent;
+    color: var(--terra);
+    border: 1.5px solid var(--terra);
+    box-shadow: none;
+}
+
+.thank-you-secondary:hover {
+    background: var(--terra-glow);
+    color: var(--terra);
+    box-shadow: none;
+}
