@@ -1,57 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>Magazine | Elysian: To Be Seen</title>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Elysian: To Be Seen</title>
 
-    <link rel="stylesheet" href="../../style.css">
-  </head>
-  <body>
-    <header>
-        <h1>Elysian: To Be Seen</h1>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <header>
+            <h1>Elysian: To Be Seen</h1>
 
-        <nav>
-            <a class="siteRepo" href="/siteRepo/index.html">Home</a>
-            <a class="siteRepo" href="/siteRepo/about.html">About</a>
-            <a class="siteRepo" href="/siteRepo/staff.html">Staff's Work</a>
-            <a class="siteRepo" href="/siteRepo/contact.html">Contact</a>
-        </nav>
-    </header>
+            <nav>
+                <a class="active siteRepo" href="/siteRepo/index.html">Home</a>
+                <a class="siteRepo" href="/siteRepo/about.html">About</a>
+                <a class="siteRepo" href="/siteRepo/staff.html">Staff's Work</a> 
+                <a class="siteRepo" href="/siteRepo/contact.html">Contact</a>
+            </nav>
+        </header>
 
-    <main class="index_main">
-      <section class="hero">
-        <div class="centered-content wrapped-centered-content">
-          <h2 id="magazine-name">Magazine...</h2>
+        <main>
+            <section class="hero" style="background-image: url('assets/homeImage.JPEG');">
+                <div class="centered-content">
+                    <h2 class="cover">Elysian: To Be Seen</h2>
 
-          <p class="description">Loading...</p>
+                    <p class="cover">Poetry, art, photography, writing, music — work that asks you to look twice.</p>
+                    <a class="button" href="about.html">Discover More</a>
+                </div>
+            </section>
 
-          <div id="issue-downloads" class="issue-downloads"></div>
+            <hr class="separator">
 
-        </div>
-      </section>
+            <section id="magazines"></section>
+        </main>
 
-      <hr class="separator">
-
-      <div style="padding: 32px 40px 0;">
-        <button id="back-button">Back</button>
-      </div>
-
-      <section>
-        <div id="categories"></div>
-      </section>
-
-      <section id="category-view">
-
-        <h2 id="category-title">
-          Select a category
-        </h2>
-
-        <div id="pieces"></div>
-      </section>
-    </main>
-
-    <footer>
+        <footer>
             <span>&copy; 2026 Elysian: To Be Seen</span>
             <span>|</span>
             <a class = "social-icon" href="https://www.instagram.com/elysian_to_be_seen/" target="_blank" rel="noopener noreferrer">
@@ -64,5 +45,5 @@
             </a>
         </footer>
 
-    <script src="../../script.js"></script>
-  </body>
+        <script src="script.js"></script>
+    </body>
