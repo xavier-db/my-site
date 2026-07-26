@@ -280,6 +280,7 @@ async function loadMagazinePage() {
         descriptionElement.textContent = await cachedFetch(
             `https://raw.githubusercontent.com/${USER}/${REPO}/main/magazines/${folderName}/description.txt`
         );
+        loadIssueDownloads(files);
 
     } catch {
         descriptionElement.textContent = "No description available.";
@@ -715,3 +716,23 @@ async function loadCPOTW() {
 }
 
 loadCPOTW();
+
+function loadIssueDownloads(files) {
+    const container = document.getElementById("issue-downloads");
+    if (!container || !Array.isArray(files)) return;
+
+    const pdfFile = files.find(f => f.type === "file" && /\.pdf$/i.test(f.name));
+    const epubFile = files.find(f => f.type === "file" && /\.epub$/i.test(f.name));
+
+    let html = "";
+
+    if (pdfFile) {
+        html += `<a class="button" href="${pdfFile.download_url}" target="_blank" rel="noopener">Download PDF</a>`;
+    }
+
+    if (epubFile) {
+        html += `<a class="button issue-download-secondary" href="${epubFile.download_url}" target="_blank" rel="noopener">Download EPUB</a>`;
+    }
+
+    container.innerHTML = html;
+}

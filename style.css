@@ -294,6 +294,27 @@ p {
     transform: translateY(-2px);
     box-shadow: 0 8px 30px rgba(123, 75, 148, 0.45);
 }
+.issue-downloads {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.issue-download-secondary {
+    background: transparent;
+    color: #fbf8fc;
+    border: 1.5px solid rgba(251, 248, 252, 0.5);
+    box-shadow: none;
+}
+
+.issue-download-secondary:hover {
+    background: rgba(251, 248, 252, 0.12);
+    color: #fbf8fc;
+    box-shadow: none;
+    transform: translateY(-2px);
+}
 
 /* SEPARATOR */
 
