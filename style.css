@@ -385,6 +385,8 @@ footer {
 
     display: flex;
     justify-content: center;
+    align-items: center;
+    gap: 16px;
 
     position: relative;
     overflow: hidden;
@@ -409,6 +411,10 @@ footer span {
     text-transform: uppercase;
     position: relative;
     z-index: 1;
+}
+
+.social-icon {
+    padding: 5px;
 }
 
 /* CONTACT */
