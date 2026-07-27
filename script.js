@@ -554,6 +554,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const descEl = document.querySelector(".staff-description");
     const mediaEl = document.getElementById("staff-media");
     const backBtn = document.getElementById("staff-back");
+    const heroEl = document.querySelector(".hero");
 
     if (!nameEl || !descEl || !mediaEl) return;
 
@@ -581,6 +582,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     );
 
     if (!Array.isArray(files)) return;
+
+    // BACKGROUND
+    const backgroundFile = files.find(f =>
+        f.type === "file" && /^cover\.(png|jpe?g|webp|gif)$/i.test(f.name)
+    );
+
+    if (backgroundFile && heroEl) {
+        heroEl.style.backgroundImage = `url(${backgroundFile.download_url})`;
+    }
 
     // DESCRIPTION
     const descFile = files.find(f => f.name === "description.txt");
