@@ -527,7 +527,7 @@ footer span {
 
 .contact_main input::placeholder,
 .contact_main textarea::placeholder {
-    color: rgba(var(--secondary-rgb), 0.28);
+    color: rgba(var(--accent-rgb), 0.4);
 }
 
 .contact_main textarea {
