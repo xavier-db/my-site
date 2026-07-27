@@ -549,6 +549,91 @@ async function loadStaffList() {
     }
 }
 
+document.addEventListener("DOMContentLoaded", async () => {
+    const nameEl = document.getElementById("staff-name");
+    const descEl = document.querySelector(".staff-description");
+    const mediaEl = document.getElementById("staff-media");
+    const backBtn = document.getElementById("staff-back");
+    const heroEl = document.querySelector(".hero");
+
+    if (!nameEl || !descEl || !mediaEl) return;
+
+    const parts = window.location.pathname.split("/").filter(Boolean);
+
+    const personName = decodeURIComponent(parts[parts.length - 2]);
+    const displayName = personName.replace(/-/g, " ");
+
+    nameEl.textContent = displayName;
+    document.title = `${displayName} | Elysian: To Be Seen`;
+
+    // SHOW BACK BUTTON
+    if (backBtn) {
+        backBtn.style.display = "block";
+        backBtn.addEventListener("click", () => {
+            history.back();
+        });
+    }
+
+    mediaEl.innerHTML = "";
+    descEl.textContent = "";
+
+    const files = await cachedFetch(
+        `https://api.github.com/repos/${USER}/${REPO}/contents/staffs-work/${personName}`
+    );
+
+    if (!Array.isArray(files)) return;
+
+    // BACKGROUND
+    const backgroundFile = files.find(f =>
+        f.type === "file" && /^cover\.(png|jpe?g|webp|gif)$/i.test(f.name)
+    );
+
+    if (backgroundFile && heroEl) {
+        heroEl.style.backgroundImage = `url(${backgroundFile.download_url})`;
+    }
+
+    // DESCRIPTION
+    const descFile = files.find(f => f.name === "description.txt");
+
+    if (descFile) {
+        descEl.textContent = await cachedFetch(descFile.download_url);
+    }
+
+    // MEDIA
+    const mediaFiles = files.filter(f =>
+        /\.(png|jpg|jpeg|webp|gif|mp4|webm|mov|mp3|wav|ogg|flac|m4a)$/i.test(f.name)
+    );
+
+    for (const file of mediaFiles) {
+        const url = file.download_url;
+
+        if (/\.(png|jpg|jpeg|webp|gif)$/i.test(file.name)) {
+            const img = document.createElement("img");
+            img.src = url;
+            mediaEl.appendChild(img);
+        }
+
+        else if (/\.(mp4|webm|mov)$/i.test(file.name)) {
+            const vid = document.createElement("video");
+            vid.controls = true;
+            vid.src = url;
+            mediaEl.appendChild(vid);
+        }
+
+        else if (/\.(mp3|wav|ogg|flac|m4a)$/i.test(file.name)) {
+            const aud = document.createElement("audio");
+            aud.controls = true;
+            aud.src = url;
+            mediaEl.appendChild(aud);
+        }
+    }
+
+    const articlesHTML = await buildArticlesHTML(files);
+    if (articlesHTML) {
+        mediaEl.insertAdjacentHTML("afterend", articlesHTML);
+    }
+});
+
 // CREATIVE PERSON OF THE WEEK
 
 async function loadCPOTW() {
